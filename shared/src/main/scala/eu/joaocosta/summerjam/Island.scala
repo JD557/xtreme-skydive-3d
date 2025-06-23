@@ -18,9 +18,9 @@ object Island {
   val basicIsland = Island(
     model = ObjLoader.loadObj("assets/island1.obj", Some("assets/island1.mtl")),
     subgoals = Vector(
-      Goal(-0.5, 0.5, -5.0, 0.2, true),
-      Goal(-0.5, 0.5, -2.5, 0.1, true)
+      Goal(-0.5, 0.5, -5.0, 0.2, true, 100),
+      Goal(-0.5, 0.5, -2.5, 0.1, true, 100)
     ),
-    goal = Goal(-0.5, 0.5, 0.10, 0.05, false)
+    goal = Goal(-0.5, 0.5, 0.10, 0.05, false, 1000)
   )
 }

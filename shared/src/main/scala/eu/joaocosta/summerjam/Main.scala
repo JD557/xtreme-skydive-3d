@@ -95,6 +95,7 @@ object Main {
         else st
       )
       .pipe(_.fall)
+      .pipe(_.updateGoals)
   }
 
   def renderGameState(

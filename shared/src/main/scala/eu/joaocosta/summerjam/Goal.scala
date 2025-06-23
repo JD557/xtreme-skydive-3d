@@ -4,17 +4,23 @@ import eu.joaocosta.minart.geometry.*
 import eu.joaocosta.summerjam.engine.*
 
 final case class Goal(
-    val x: Double,
-    val y: Double,
-    val z: Double,
-    val radius: Double,
-    val subGoal: Boolean
+    x: Double,
+    y: Double,
+    z: Double,
+    radius: Double,
+    subGoal: Boolean,
+    score: Int
 ) {
   val innerRadius =
     if (subGoal) radius * 2 / 3
     else radius / 2
 
   val point = Point(x, y)
+
+  def isHit(playerPos: Point, playerZ: Double): Boolean =
+    math.abs(playerZ - z) <= GameConstants.tolerance &&
+      math.abs(playerPos.x - x) <= radius &&
+      math.abs(playerPos.y - y) <= radius
 
   lazy val polygons = {
     val outerRim = Helpers.toPolygons(

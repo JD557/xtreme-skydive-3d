@@ -42,4 +42,15 @@ final case class GameState(
   )
   def fall = copy(height = height - fallSpeed)
   def openParachute = copy(parachute = true)
+  def updateGoals = {
+    val (hitGoal, otherGoals) = island.subgoals.partition(
+      _.isHit(position, -1 * height)
+    )
+    if (hitGoal.nonEmpty) {
+      copy(
+        island = island.copy(subgoals = otherGoals),
+        score = score + hitGoal.map(_.score).sum
+      )
+    } else this
+  }
 }
