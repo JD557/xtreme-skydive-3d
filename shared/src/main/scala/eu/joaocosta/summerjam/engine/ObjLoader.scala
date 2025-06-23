@@ -46,7 +46,7 @@ object ObjLoader {
       ) { case ((vertices, lights, faces, material), line) =>
         line match {
           case s"v $x $y $z" =>
-            val point = Point3d(-x.toDouble, -y.toDouble, z.toDouble)
+            val point = Point3d(x.toDouble, y.toDouble, z.toDouble)
             (vertices :+ point, lights, faces, material)
           case s"vn $x $y $z" =>
             val cos45 = 0.7071
@@ -71,27 +71,15 @@ object ObjLoader {
             val lightValues = parsedFaces.map(_._3).map(lights)
             val color = material
             val polygon =
-              if (values.size == 4)
-                Polygon.Quad3d(
-                  vertices(values(0)),
-                  vertices(values(1)),
-                  vertices(values(2)),
-                  vertices(values(3)),
-                  color,
-                  lightValues(0),
-                  lightValues(1),
-                  lightValues(2),
-                  lightValues(3)
-                )
-              else if (values.size == 3)
+              if (values.size == 3)
                 Polygon.Triangle3d(
                   vertices(values(0)),
-                  vertices(values(1)),
                   vertices(values(2)),
+                  vertices(values(1)),
                   color,
                   lightValues(0),
-                  lightValues(1),
-                  lightValues(2)
+                  lightValues(2),
+                  lightValues(1)
                 )
               else
                 throw new Exception("Invalid polygon: " + values.toVector)

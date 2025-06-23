@@ -9,8 +9,8 @@ final case class GameState(
     height: Double
 ) {
 
-  val moveSpeed = if (parachute) 0.005 else 0.01
-  val fallSpeed = if (parachute) 0.005 else 0.01
+  val moveSpeed = if (parachute) 0.0025 else 0.01
+  val fallSpeed = if (parachute) 0.0025 else 0.01
 
   def rotateLeft = copy(rotation = rotation + 0.05)
   def rotateRight = copy(rotation = rotation - 0.05)

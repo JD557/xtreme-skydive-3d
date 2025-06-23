@@ -29,7 +29,7 @@ object Main {
       position = Island.basicIsland.goal,
       parachute = false,
       rotation = 0.0,
-      height = 5.0
+      height = 10.0
     )
 
   def updateState(state: GameState, input: KeyboardInput): GameState = {
