@@ -53,7 +53,7 @@ object Main {
         )
       )
     val polys = Helpers
-      .transformModel(state.island.toPolygons)(point =>
+      .transformModel(state.island.polygons)(point =>
         point.copy(
           x = transformation.applyX(point.x, point.y),
           y = transformation.applyY(point.x, point.y),
@@ -62,7 +62,9 @@ object Main {
       )
     Renderer.render(surface, polys)
     val lightFactor =
-      Color.grayscale(Math.min(255, (255 * state.height / GameConstants.startHeight).toInt))
+      Color.grayscale(
+        Math.min(255, (255 * state.height / GameConstants.startHeight).toInt)
+      )
     surface.modify(_.map(_ + lightFactor))
   }
 
@@ -101,7 +103,7 @@ object Main {
         )
       )
     val polys = Helpers
-      .transformModel(state.island.toPolygons)(point =>
+      .transformModel(state.island.polygons)(point =>
         point.copy(
           x = transformation.applyX(point.x, point.y),
           y = transformation.applyY(point.x, point.y),

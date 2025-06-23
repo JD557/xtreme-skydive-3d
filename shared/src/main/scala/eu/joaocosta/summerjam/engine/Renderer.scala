@@ -14,7 +14,9 @@ object Renderer {
       AxisAlignedBoundingBox(0, 0, buffer.width, buffer.height)
 
     polys.iterator
-      .filter(_.project.knownFace != Some(Shape.Face.Back))
+      .filter{ poly =>
+        poly.project.knownFace != Some(Shape.Face.Back) && poly.depth >= 0.01
+      }
       .foreach { poly =>
         val shape = poly.project
         lazy val maxDet = ConvexPolygon.determinant(

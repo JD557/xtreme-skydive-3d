@@ -10,6 +10,7 @@ object Colors {
   val grassLight = Color(103, 169, 133)
   val white = Color(243, 237, 249)
   val redLight = Color(220, 110, 149)
+  val gold = Color(252, 177, 71)
 
   val mask = Color(255, 0, 255)
 }

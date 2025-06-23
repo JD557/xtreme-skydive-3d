@@ -12,10 +12,11 @@ final case class LevelIntroState(
 
   def initialGameState = GameState(
     island = island,
-    position = island.goal,
+    position = island.goal.point,
     parachute = false,
     rotation = 0.0,
-    height = GameConstants.startHeight
+    height = GameConstants.startHeight,
+    score = 0
   )
 }
 
@@ -24,7 +25,8 @@ final case class GameState(
     position: Point,
     parachute: Boolean,
     rotation: Double,
-    height: Double
+    height: Double,
+    score: Int
 ) extends AppState {
 
   val moveSpeed = if (parachute) 0.0025 else 0.01

@@ -4,39 +4,21 @@ import eu.joaocosta.minart.geometry.*
 import eu.joaocosta.summerjam.engine.*
 
 final case class Island(
-  model: Vector[Polygon],
-  goal: Point,
+    model: Vector[Polygon],
+    subgoals: Vector[Goal],
+    goal: Goal
 ) {
-
-  lazy val goalPolygons =
-    Helpers.toPolygons(
-      Helpers.triangulate(
-        Shape.rectangle(
-          Point(goal.x - 0.025, goal.y - 0.025),
-          Point(goal.x + 0.025, goal.y + 0.025)
-        )
-      ),
-      Colors.white,
-      0.11
-    ) ++ Helpers.toPolygons(
-      Helpers.triangulate(
-        Shape.rectangle(
-          Point(goal.x - 0.05, goal.y - 0.05),
-          Point(goal.x + 0.05, goal.y + 0.05)
-        )
-      ),
-      Colors.redLight,
-      0.12
-    )
-
-  lazy val toPolygons =
-    goalPolygons ++
-      model
+  lazy val polygons =
+    subgoals.flatMap(_.polygons) ++ goal.polygons ++ model
 }
 
 object Island {
   val basicIsland = Island(
     model = ObjLoader.loadObj("assets/island1.obj", Some("assets/island1.mtl")),
-    goal = Point(-0.5, 0.5),
+    subgoals = Vector(
+      Goal(-0.5, 0.5, -5.0, 0.2, true),
+      Goal(-0.5, 0.5, -2.5, 0.1, true)
+    ),
+    goal = Goal(-0.5, 0.5, 0.10, 0.05, false)
   )
 }
