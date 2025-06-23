@@ -154,6 +154,28 @@ object Main {
         (surface.height - diverSurface.height) / 2
       )
 
+    surface.fillRegion(
+      AxisAlignedBoundingBox(0, 0, Constants.screenWidth, 40),
+      Color(0, 0, 0)
+    )
+    Resources.bizcat.renderText(surface, "Score:", 4, 4, Color(255, 255, 255))
+    Resources.bizcat.renderText(
+      surface,
+      "%06d".format(state.score),
+      4,
+      20,
+      Color(255, 255, 255)
+    )
+
+    Resources.bizcat.renderText(surface, "Height:", 128, 4, Color(255, 255, 255))
+    Resources.bizcat.renderText(
+      surface,
+      "%06.2f".format(state.height * 1000).replace(",", "."),
+      128,
+      20,
+      Color(255, 255, 255)
+    )
+
     if (transition > 0) {
       val lightFactor = Color.grayscale((255 * transition).toInt)
       surface.modify(_.map(_ + lightFactor))
