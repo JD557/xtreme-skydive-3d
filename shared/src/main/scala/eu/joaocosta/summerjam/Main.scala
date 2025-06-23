@@ -13,7 +13,8 @@ object Main {
   val canvasSettings =
     Canvas.Settings(
       width = Constants.screenWidth * 2,
-      height = Constants.screenHeight * 2
+      height = Constants.screenHeight * 2,
+      scale = Some(2)
     )
 
   val sea =
@@ -61,6 +62,16 @@ object Main {
         )
       )
     Renderer.render(surface, polys)
+
+    val specialPolys = Helpers
+      .transformModel(state.island.specialPolygons)(point =>
+        point.copy(
+          x = transformation.applyX(point.x, point.y),
+          y = transformation.applyY(point.x, point.y),
+          z = point.z + Math.max(0, state.height)
+        )
+      )
+    Renderer.renderSpecial(surface, specialPolys)
     val lightFactor =
       Color.grayscale(
         Math.min(255, (255 * state.height / GameConstants.startHeight).toInt)
@@ -112,6 +123,16 @@ object Main {
       )
     Renderer.render(surface, polys)
 
+    val specialPolys = Helpers
+      .transformModel(state.island.specialPolygons)(point =>
+        point.copy(
+          x = transformation.applyX(point.x, point.y),
+          y = transformation.applyY(point.x, point.y),
+          z = point.z + Math.max(0, state.height)
+        )
+      )
+    Renderer.renderSpecial(surface, specialPolys)
+
     val diverSurface =
       if (state.parachute) Resources.parachute
       else {
@@ -139,10 +160,25 @@ object Main {
     }
   }
 
+  val frameCounter = {
+    var frameNumber: Int = 0
+    var timer = System.currentTimeMillis
+    () => {
+      frameNumber += 1
+      if (frameNumber % 10 == 0) {
+        val currTime = System.currentTimeMillis()
+        val fps = 10.0 / ((currTime - timer) / 1000.0)
+        println("FPS:" + fps)
+        timer = System.currentTimeMillis()
+      }
+    }
+  }
+
   def main(args: Array[String]): Unit = {
     AppLoop
       .statefulRenderLoop[AppState]((state: AppState) =>
         (canvas: Canvas) => {
+          frameCounter()
           frame += 1
           val input = canvas.getKeyboardInput()
           canvas.clear()

@@ -9,7 +9,9 @@ final case class Island(
     goal: Goal
 ) {
   lazy val polygons =
-    subgoals.flatMap(_.polygons) ++ goal.polygons ++ model
+     goal.polygons ++ model
+
+  lazy val specialPolygons = subgoals.flatMap(_.polygons)
 }
 
 object Island {

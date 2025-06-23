@@ -36,7 +36,8 @@ final case class Goal(
           Point(x + radius, y + radius)
         )
       ).flatMap(Helpers.triangulate),
-      if (subGoal) Colors.gold else Colors.redLight,
+      if (subGoal) Colors.gold.copy(a = 200).premultiplyAlpha
+      else Colors.redLight,
       z
     )
     val innerRim =
@@ -47,10 +48,10 @@ final case class Goal(
             Point(x + innerRadius, y + innerRadius)
           )
         ),
-        Colors.white,
+        if (subGoal) Colors.white.copy(a = 128).premultiplyAlpha
+        else Colors.white,
         z
       )
-    if (subGoal) outerRim
-    else outerRim ++ innerRim
+    outerRim ++ innerRim
   }
 }

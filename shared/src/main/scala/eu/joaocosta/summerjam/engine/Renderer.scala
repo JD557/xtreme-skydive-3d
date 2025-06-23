@@ -14,8 +14,10 @@ object Renderer {
       AxisAlignedBoundingBox(0, 0, buffer.width, buffer.height)
 
     polys.iterator
-      .filter{ poly =>
-        poly.project.knownFace != Some(Shape.Face.Back) && poly.depth >= 0.01
+      .filter { poly =>
+        poly.project.knownFace != Some(Shape.Face.Back) &&
+        poly.depth >= Constants.nearPlane &&
+        screenArea.collides(poly.project.aabb)
       }
       .foreach { poly =>
         val shape = poly.project
@@ -58,6 +60,29 @@ object Renderer {
           }
         }
       }
+  }
 
+  def renderSpecial(
+      buffer: MutableSurface,
+      polys: IterableOnce[Polygon]
+  ): Unit = {
+    val screenArea =
+      AxisAlignedBoundingBox(0, 0, buffer.width, buffer.height)
+
+    polys.iterator
+      .filter { poly =>
+        poly.project.knownFace != Some(
+          Shape.Face.Back
+        ) && poly.depth >= Constants.nearPlane
+      }
+      .foreach { poly =>
+        val shape = poly.project
+        buffer.rasterizeShape(
+          shape,
+          Some(poly.color),
+          None,
+          BlendMode.AlphaAdd
+        )(0, 0)
+      }
   }
 }
