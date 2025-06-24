@@ -15,6 +15,54 @@ object RenderLogic {
       Colors.seaDark * alpha + Colors.seaLight * alpha.invert
     )
 
+  // State logic
+
+  def renderIntroState(
+      state: IntroState,
+      input: KeyboardInput,
+      surface: MutableSurface
+  ): Unit = {
+
+    def renderText() = {
+      val text = "A JD557 game for"
+      val aabb = Resources.bizcat.textBoundingBox(text, 0, 0)
+      Resources.bizcat.renderText(
+        surface,
+        text,
+        (Constants.screenWidth - aabb.width) / 2,
+        32,
+        Color(255, 255, 255)
+      )
+    }
+
+    surface.blit(Resources.jamLogo)(
+      (Constants.screenWidth - Resources.jamLogo.width) / 2,
+      (Constants.screenHeight - Resources.jamLogo.height) / 2
+    )
+    if (state.t > 0.3) {
+      surface.blit(
+        Resources.jamLogoWa
+          .columnScroll(dy => (8 * math.sin(dy / 8.0 + state.t * 16)).toInt)
+          .flipV
+          .scale(1.0, 0.5)
+          .map(_ * Color.grayscale((255 * (state.t - 0.3)).toInt))
+      )(
+        (Constants.screenWidth - Resources.jamLogo.width) / 2,
+        Resources.jamLogo.height + (Constants.screenHeight - Resources.jamLogo.height) / 2
+      )
+    }
+
+    renderText()
+
+    val lightFactor =
+      Color.grayscale(
+        Math.min(255, (512 * math.sin(state.t * Math.PI)).toInt)
+      )
+    surface.modify(_.map(_ * lightFactor))
+
+    if (state.t < 0.5) renderText()
+  }
+
   def renderLevelIntroState(
       state: LevelIntroState,
       input: KeyboardInput,

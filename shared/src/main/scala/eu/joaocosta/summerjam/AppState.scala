@@ -4,6 +4,8 @@ import eu.joaocosta.minart.geometry.Point
 
 sealed trait AppState
 
+final case class IntroState(t: Double) extends AppState
+
 final case class LevelIntroState(
     island: Island,
     height: Double,

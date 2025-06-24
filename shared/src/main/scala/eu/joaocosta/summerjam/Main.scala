@@ -4,6 +4,7 @@ import eu.joaocosta.minart.backend.defaults.given
 import eu.joaocosta.minart.graphics.*
 import eu.joaocosta.minart.runtime.*
 import eu.joaocosta.summerjam.engine.*
+import eu.joaocosta.minart.audio.AudioPlayer
 
 object Main {
   val canvasSettings =
@@ -29,8 +30,9 @@ object Main {
 
   def main(args: Array[String]): Unit = {
     AppLoop
-      .statefulRenderLoop[AppState]((state: AppState) =>
-        (canvas: Canvas) => {
+      .statefulAppLoop[AppState]((state: AppState) =>
+        system => {
+          import system.*
           frameCounter()
           RenderLogic.frame += 1
           val input = canvas.getKeyboardInput()
@@ -41,6 +43,10 @@ object Main {
             Color(0, 0, 0)
           )
           val newState = state match {
+            case i: IntroState =>
+              if (i.t <= 0) audioPlayer.playNow(Resources.startupSound, 0)
+              RenderLogic.renderIntroState(i, input, surface)
+              StateTransitions.updateIntroState(i, input)
             case i: LevelIntroState =>
               RenderLogic.renderLevelIntroState(i, input, surface)
               StateTransitions.updateLevelIntroState(i, input)
@@ -64,7 +70,11 @@ object Main {
           newState
         }
       )
-      .configure(canvasSettings, LoopFrequency.hz60, StateTransitions.initialState)
+      .configure(
+        (canvasSettings, AudioPlayer.Settings()),
+        LoopFrequency.hz60,
+        StateTransitions.initialState
+      )
       .run()
   }
 }

@@ -6,11 +6,22 @@ import eu.joaocosta.minart.input.KeyboardInput
 import eu.joaocosta.minart.input.KeyboardInput.Key
 
 object StateTransitions {
-  val initialState = LevelIntroState(
-    island = Island.basicIsland,
-    height = 0.0,
-    currentScore = 0
-  )
+  val initialState = IntroState(0)
+
+  // State transitions
+
+  def updateIntroState(
+      state: IntroState,
+      input: KeyboardInput
+  ): AppState = {
+    if (state.t >= 1.0)
+      LevelIntroState(
+        island = Island.basicIsland,
+        height = 0.0,
+        currentScore = 0
+      )
+    else state.copy(t = state.t + 1.0 / (60 * 15)) // 15 seconds at 60FPS
+  }
 
   def updateLevelIntroState(
       state: LevelIntroState,
