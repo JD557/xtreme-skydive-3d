@@ -235,8 +235,8 @@ object RenderLogic {
     }
   }
 
-  def renderGameOverState(
-      state: GameOverState,
+  def renderLevelResultState(
+      state: LevelResultState,
       input: KeyboardInput,
       surface: MutableSurface
   ): Unit = {

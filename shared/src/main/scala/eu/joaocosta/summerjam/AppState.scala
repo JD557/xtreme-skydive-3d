@@ -9,13 +9,17 @@ final case class IntroState(t: Double) extends AppState
 final case class MenuState(t: Double) extends AppState
 
 final case class LevelIntroState(
-    island: Island,
+    level: Int,
     height: Double,
     currentScore: Int
 ) extends AppState {
+
+  def island = Island.islands(level)
+
   def rise = copy(height = height + GameConstants.levelIntroSpeed)
 
   def initialGameState = GameState(
+    level = level,
     island = island,
     position = island.goal.point,
     parachute = false,
@@ -26,6 +30,7 @@ final case class LevelIntroState(
 }
 
 final case class GameState(
+    level: Int,
     island: Island,
     position: Point,
     parachute: Boolean,
@@ -68,6 +73,8 @@ final case class GameState(
   val isDone = height <= 0
 }
 
-final case class GameOverState(t: Double, lastState: GameState) extends AppState {
-  val success = lastState.island.goal.isHit(lastState.position, lastState.island.goal.z)
+final case class LevelResultState(t: Double, lastState: GameState)
+    extends AppState {
+  val success =
+    lastState.island.goal.isHit(lastState.position, lastState.island.goal.z)
 }

@@ -6,7 +6,7 @@ import eu.joaocosta.minart.input.KeyboardInput
 import eu.joaocosta.minart.input.KeyboardInput.Key
 
 object StateTransitions {
-  //val initialState = IntroState(0)
+  // val initialState = IntroState(0)
   val initialState = MenuState(0)
 
   // State transitions
@@ -25,7 +25,7 @@ object StateTransitions {
   ): AppState = {
     if (input.keysPressed.contains(Key.Enter))
       LevelIntroState(
-        island = Island.basicIsland,
+        level = 0,
         height = 0.0,
         currentScore = 0
       )
@@ -59,21 +59,24 @@ object StateTransitions {
       .pipe(_.fall)
       .pipe(_.updateGoals)
       .pipe(st =>
-        if (st.isDone) GameOverState(0.0, st)
+        if (st.isDone) LevelResultState(0.0, st)
         else st
       )
   }
 
-  def updateGameOverState(
-      state: GameOverState,
+  def updateLevelResultState(
+      state: LevelResultState,
       input: KeyboardInput
   ): AppState = {
-    if (input.keysPressed.contains(Key.Enter))
-      LevelIntroState(
-        island = Island.basicIsland,
-        height = 0.0,
-        currentScore = 0
-      )
-    else state.copy(t = state.t + 1.0 / 60)
+    if (input.keysPressed.contains(Key.Enter)) {
+      val nextLevel = state.lastState.level + 1
+      if (nextLevel < Island.islands.size)
+        LevelIntroState(
+          level = nextLevel,
+          height = 0.0,
+          currentScore = state.lastState.score
+        )
+      else MenuState(0)
+    } else state.copy(t = state.t + 1.0 / 60)
   }
 }

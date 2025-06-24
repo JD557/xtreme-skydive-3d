@@ -59,10 +59,10 @@ object Main {
             case g: GameState =>
               RenderLogic.renderGameState(g, input, surface)
               StateTransitions.updateGameState(g, input)
-            case go: GameOverState =>
-              if (go.t <= 0) audioPlayer.playNow(Resources.shutterSound, 0)
-              RenderLogic.renderGameOverState(go, input, surface)
-              StateTransitions.updateGameOverState(go, input)
+            case lr: LevelResultState =>
+              if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 0)
+              RenderLogic.renderLevelResultState(lr, input, surface)
+              StateTransitions.updateLevelResultState(lr, input)
           }
           canvas.blit(
             surface.view
