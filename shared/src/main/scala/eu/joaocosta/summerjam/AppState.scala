@@ -78,3 +78,5 @@ final case class LevelResultState(t: Double, lastState: GameState)
   val success =
     lastState.island.goal.isHit(lastState.position, lastState.island.goal.z)
 }
+
+final case class GameOverState(t: Double, score: Int) extends AppState

@@ -286,4 +286,13 @@ object RenderLogic {
       surface.modify(_.map(_ + lightFactor))
     }
   }
+
+  def renderGameOverState(
+      state: GameOverState,
+      input: KeyboardInput,
+      surface: MutableSurface
+  ): Unit = {
+    Resources.bizcat.renderText(surface, "GAME OVER", 4, 32, Color(255, 255, 255))
+    Resources.bizcat.renderText(surface, s"Score: ${state.score}", 4, 64, Color(255, 255, 255))
+  }
 }

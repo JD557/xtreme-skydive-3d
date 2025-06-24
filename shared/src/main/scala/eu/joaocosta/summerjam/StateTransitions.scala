@@ -76,7 +76,16 @@ object StateTransitions {
           height = 0.0,
           currentScore = state.lastState.score
         )
-      else MenuState(0)
+      else GameOverState(0, state.lastState.score)
+    } else state.copy(t = state.t + 1.0 / 60)
+  }
+
+  def updateGameOverState(
+      state: GameOverState,
+      input: KeyboardInput
+  ): AppState = {
+    if (input.keysPressed.contains(Key.Enter)) {
+      MenuState(0)
     } else state.copy(t = state.t + 1.0 / 60)
   }
 }

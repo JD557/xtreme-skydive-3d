@@ -63,6 +63,9 @@ object Main {
               if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 0)
               RenderLogic.renderLevelResultState(lr, input, surface)
               StateTransitions.updateLevelResultState(lr, input)
+            case go: GameOverState =>
+              RenderLogic.renderGameOverState(go, input, surface)
+              StateTransitions.updateGameOverState(go, input)
           }
           canvas.blit(
             surface.view
