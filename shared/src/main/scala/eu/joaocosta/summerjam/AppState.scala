@@ -6,7 +6,8 @@ sealed trait AppState
 
 final case class LevelIntroState(
     island: Island,
-    height: Double
+    height: Double,
+    currentScore: Int
 ) extends AppState {
   def rise = copy(height = height + GameConstants.levelIntroSpeed)
 
@@ -16,7 +17,7 @@ final case class LevelIntroState(
     parachute = false,
     rotation = 0.0,
     height = GameConstants.startHeight,
-    score = 0
+    score = currentScore
   )
 }
 
@@ -29,11 +30,13 @@ final case class GameState(
     score: Int
 ) extends AppState {
 
-  val moveSpeed = if (parachute) 0.0025 else 0.01
-  val fallSpeed = if (parachute) 0.0025 else 0.01
+  val moveSpeed =
+    if (parachute) GameConstants.parachuteMoveSpeed else GameConstants.moveSpeed
+  val fallSpeed =
+    if (parachute) GameConstants.parachuteFallSpeed else GameConstants.fallSpeed
 
-  def rotateLeft = copy(rotation = rotation + 0.05)
-  def rotateRight = copy(rotation = rotation - 0.05)
+  def rotateLeft = copy(rotation = rotation + GameConstants.rotateSpeed)
+  def rotateRight = copy(rotation = rotation - GameConstants.rotateSpeed)
   def move = copy(position =
     Point(
       position.x - moveSpeed * math.sin(rotation),
@@ -53,4 +56,8 @@ final case class GameState(
       )
     } else this
   }
+
+  val isDone = height <= 0
 }
+
+final case class GameOverState(finalScore: Int) extends AppState
