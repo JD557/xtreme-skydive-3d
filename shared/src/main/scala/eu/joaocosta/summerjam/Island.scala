@@ -38,6 +38,20 @@ object Island {
         Goal(-1, 0, -5, 0.1, true, 100)
       ),
       goal = Goal(0.0, 0.0, 0.0, 0.05, false, 1000)
+    ),
+    Island(
+      model =
+        ObjLoader.loadObj("assets/island3.obj", Some("assets/island3.mtl")),
+      subgoals = Vector(
+        Goal(0.25, 0.25, -15.0, 0.1, true, 100),
+        Goal(-0.5, -0.5, -13, 0.1, true, 100),
+        Goal(0, 0, -11.5, 0.1, true, 100),
+        Goal(0.5, 0.5, -10, 0.1, true, 100),
+        Goal(0, 0, -7.5, 0.1, true, 100),
+        Goal(-1, -1, -5, 0.1, true, 100),
+        Goal(-0.9, -0.9, -2.5, 0.1, true, 100)
+      ),
+      goal = Goal(0.70, 0.70, 0.1, 0.05, false, 1000)
     )
   )
 }
