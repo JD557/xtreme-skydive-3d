@@ -6,7 +6,8 @@ import eu.joaocosta.minart.input.KeyboardInput
 import eu.joaocosta.minart.input.KeyboardInput.Key
 
 object StateTransitions {
-  val initialState = IntroState(0)
+  //val initialState = IntroState(0)
+  val initialState = MenuState(0)
 
   // State transitions
 
@@ -43,7 +44,7 @@ object StateTransitions {
   def updateGameState(state: GameState, input: KeyboardInput): AppState = {
     state
       .pipe(st =>
-        if (input.keysPressed.contains(Key.Space)) st.openParachute
+        if (st.height <= 1.0) st.openParachute
         else st
       )
       .pipe(st =>
@@ -58,8 +59,21 @@ object StateTransitions {
       .pipe(_.fall)
       .pipe(_.updateGoals)
       .pipe(st =>
-        if (st.isDone) GameOverState(st.score)
+        if (st.isDone) GameOverState(0.0, st)
         else st
       )
+  }
+
+  def updateGameOverState(
+      state: GameOverState,
+      input: KeyboardInput
+  ): AppState = {
+    if (input.keysPressed.contains(Key.Enter))
+      LevelIntroState(
+        island = Island.basicIsland,
+        height = 0.0,
+        currentScore = 0
+      )
+    else state.copy(t = state.t + 1.0 / 60)
   }
 }

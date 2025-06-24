@@ -61,7 +61,7 @@ object Main {
               StateTransitions.updateGameState(g, input)
             case go: GameOverState =>
               RenderLogic.renderGameOverState(go, input, surface)
-              state
+              StateTransitions.updateGameOverState(go, input)
           }
           canvas.blit(
             surface.view

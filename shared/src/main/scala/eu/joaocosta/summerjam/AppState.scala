@@ -64,4 +64,5 @@ final case class GameState(
   val isDone = height <= 0
 }
 
-final case class GameOverState(finalScore: Int) extends AppState
+final case class GameOverState(t: Double, lastState: GameState) extends AppState
+
