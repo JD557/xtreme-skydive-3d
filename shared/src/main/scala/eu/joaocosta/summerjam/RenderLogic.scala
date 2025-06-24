@@ -81,8 +81,8 @@ object RenderLogic {
     }
 
     val logo =
-      if (state.t < 1) {
-        Resources.logo.view.map(c => if (c != Color(0, 0, 0)) Color.grayscale((state.t * 255).toInt) else c)
+      if (state.t < 1.5) {
+        Resources.logo.view.map(c => if (c != Color(0, 0, 0)) Color.grayscale((state.t / 2 * 255).toInt) else c)
       }
       else Resources.logo
 
@@ -93,9 +93,9 @@ object RenderLogic {
 
     if (((frame / 16) & 1) == 0) renderText()
 
-    if (state.t < 2.5) {
+    if (state.t < 4) {
       val lightFactor = Color.grayscale(
-        Math.max(0, Math.min(255, (255 * math.sin((state.t - 0.5) * Math.PI)).toInt))
+        Math.max(0, Math.min(255, (255 * math.sin((state.t - 0.5) * Math.PI / 2)).toInt))
       )
       surface.modify(_.map(_ + lightFactor))
     }

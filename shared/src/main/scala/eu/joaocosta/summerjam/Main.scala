@@ -50,6 +50,7 @@ object Main {
               RenderLogic.renderIntroState(i, input, surface)
               StateTransitions.updateIntroState(i, input)
             case m: MenuState =>
+              if (m.t <= 0) audioPlayer.playNow(Resources.introMusic, 0)
               RenderLogic.renderMenuState(m, input, surface)
               StateTransitions.updateMenuState(m, input)
             case i: LevelIntroState =>
