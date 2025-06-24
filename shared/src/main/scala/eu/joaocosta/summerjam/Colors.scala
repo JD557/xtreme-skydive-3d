@@ -13,4 +13,7 @@ object Colors {
   val gold = Color(252, 177, 71)
 
   val mask = Color(255, 0, 255)
+
+  val afternoonDark = Color(220, 106, 70)
+  val afternoonLight = Color(228, 172, 219)
 }

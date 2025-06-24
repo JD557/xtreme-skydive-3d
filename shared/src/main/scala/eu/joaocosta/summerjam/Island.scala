@@ -3,18 +3,26 @@ package eu.joaocosta.summerjam
 import eu.joaocosta.minart.geometry.*
 import eu.joaocosta.summerjam.engine.*
 
+import eu.joaocosta.minart.graphics.Color
+
 final case class Island(
     model: Vector[Polygon],
     subgoals: Vector[Goal],
-    goal: Goal
+    goal: Goal,
+    afternoon: Boolean = false
 ) {
   lazy val polygons =
-    goal.polygons ++ model
+    goal.polygons ++ (if (!afternoon) model else Island.withAfternoonColors(model))
 
   lazy val specialPolygons = subgoals.reverse.flatMap(_.polygons)
 }
 
 object Island {
+  def withAfternoonColors(model: Vector[Polygon]): Vector[Polygon] =
+    model.collect {
+      case tri: Polygon.Triangle3d => tri.copy(color = tri.color * Colors.afternoonDark)
+    }
+
   val islands = Vector(
     Island(
       model =

@@ -15,6 +15,12 @@ object RenderLogic {
       Colors.seaDark * alpha + Colors.seaLight * alpha.invert
     )
 
+  val afternoonSea =
+    RamSurface.tabulate(Constants.screenWidth, Constants.screenHeight)((x, y) =>
+      val alpha = Color.grayscale(255 * y / Constants.screenHeight)
+      Colors.afternoonDark * alpha + Colors.afternoonLight * alpha.invert
+    )
+
   def renderIsland(
       island: Island,
       position: Point,
@@ -22,7 +28,7 @@ object RenderLogic {
       height: Double,
       surface: MutableSurface
   ): Unit = {
-    surface.blit(sea)(0, 0)
+    surface.blit(if (island.afternoon) afternoonSea else sea)(0, 0)
     val transformation = Matrix
       .rotation(rotation)
       .multiply(
