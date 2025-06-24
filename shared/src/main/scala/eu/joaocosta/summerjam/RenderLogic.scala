@@ -194,16 +194,28 @@ object RenderLogic {
       )
 
     if (showHud) {
+      val hudAabb = AxisAlignedBoundingBox(
+        0,
+        Constants.screenHeight - 40,
+        Constants.screenWidth,
+        40
+      )
       surface.fillRegion(
-        AxisAlignedBoundingBox(0, 0, Constants.screenWidth, 40),
+        hudAabb,
         Color(0, 0, 0)
       )
-      Resources.bizcat.renderText(surface, "Score:", 4, 4, Color(255, 255, 255))
+      Resources.bizcat.renderText(
+        surface,
+        "Score:",
+        4,
+        hudAabb.y + 4,
+        Color(255, 255, 255)
+      )
       Resources.bizcat.renderText(
         surface,
         "%06d".format(state.score),
         4,
-        20,
+        hudAabb.y + 4 + 16,
         Color(255, 255, 255)
       )
 
@@ -211,14 +223,14 @@ object RenderLogic {
         surface,
         "Height:",
         128,
-        4,
+        hudAabb.y + 4,
         Color(255, 255, 255)
       )
       Resources.bizcat.renderText(
         surface,
-        "%06.2f".format(state.height * 1000).replace(",", "."),
+        "%06.2f".format(state.height * 100).replace(",", "."),
         128,
-        20,
+        hudAabb.y + 4 + 16,
         Color(255, 255, 255)
       )
     }
@@ -255,7 +267,7 @@ object RenderLogic {
             x < 10 || x > lastGameSurface.width - 10 ||
             y < 10 || y > lastGameSurface.height - 10
           ) Color(255, 255, 255)
-          else Color.grayscale((color.r + color.g + color.b) / 3)
+          else color
       )
     )
 

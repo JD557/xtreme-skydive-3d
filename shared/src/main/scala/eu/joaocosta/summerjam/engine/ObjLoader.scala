@@ -52,7 +52,7 @@ object ObjLoader {
             val cos45 = 0.7071
             (
               vertices,
-              lights :+ (y.toDouble * cos45 - z.toDouble * cos45),
+              lights :+ (-1 * y.toDouble * cos45 - z.toDouble * cos45),
               faces,
               material
             )

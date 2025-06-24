@@ -10,7 +10,6 @@ object StateTransitions {
   val initialState = MenuState(0)
 
   // State transitions
-
   def updateIntroState(
       state: IntroState,
       input: KeyboardInput
@@ -25,7 +24,7 @@ object StateTransitions {
   ): AppState = {
     if (input.keysPressed.contains(Key.Enter))
       LevelIntroState(
-        level = 0,
+        level = GameConstants.initialLevel,
         height = 0.0,
         totalScore = 0
       )
