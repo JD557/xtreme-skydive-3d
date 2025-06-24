@@ -56,11 +56,49 @@ object RenderLogic {
 
     val lightFactor =
       Color.grayscale(
-        Math.min(255, (512 * math.sin(state.t * Math.PI)).toInt)
+        Math.max(0, Math.min(255, (512 * math.sin(state.t * Math.PI)).toInt))
       )
     surface.modify(_.map(_ * lightFactor))
 
     if (state.t < 0.5) renderText()
+  }
+
+  def renderMenuState(
+      state: MenuState,
+      input: KeyboardInput,
+      surface: MutableSurface
+  ): Unit = {
+    def renderText() = {
+      val text = "Press Enter to Start"
+      val aabb = Resources.bizcat.textBoundingBox(text, 0, 0)
+      Resources.bizcat.renderText(
+        surface,
+        text,
+        (Constants.screenWidth - aabb.width) / 2,
+        Constants.screenHeight - 32,
+        Color(255, 255, 255)
+      )
+    }
+
+    val logo =
+      if (state.t < 1) {
+        Resources.logo.view.map(c => if (c != Color(0, 0, 0)) Color.grayscale((state.t * 255).toInt) else c)
+      }
+      else Resources.logo
+
+    surface.blit(logo)(
+      (Constants.screenWidth - Resources.logo.width) / 2,
+      (Constants.screenHeight - Resources.logo.height) / 2
+    )
+
+    if (((frame / 16) & 1) == 0) renderText()
+
+    if (state.t < 2.5) {
+      val lightFactor = Color.grayscale(
+        Math.max(0, Math.min(255, (255 * math.sin((state.t - 0.5) * Math.PI)).toInt))
+      )
+      surface.modify(_.map(_ + lightFactor))
+    }
   }
 
   def renderLevelIntroState(

@@ -11,7 +11,9 @@ object Main {
     Canvas.Settings(
       width = Constants.screenWidth * 2,
       height = Constants.screenHeight * 2,
-      scale = Some(2)
+      scale = Some(2),
+      clearColor = Color(0, 0, 0),
+      title = "Xtreme Skydive 3D"
     )
 
   val frameCounter = {
@@ -47,6 +49,9 @@ object Main {
               if (i.t <= 0) audioPlayer.playNow(Resources.startupSound, 0)
               RenderLogic.renderIntroState(i, input, surface)
               StateTransitions.updateIntroState(i, input)
+            case m: MenuState =>
+              RenderLogic.renderMenuState(m, input, surface)
+              StateTransitions.updateMenuState(m, input)
             case i: LevelIntroState =>
               RenderLogic.renderLevelIntroState(i, input, surface)
               StateTransitions.updateLevelIntroState(i, input)

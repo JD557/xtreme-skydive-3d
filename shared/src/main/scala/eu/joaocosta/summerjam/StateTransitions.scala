@@ -14,13 +14,21 @@ object StateTransitions {
       state: IntroState,
       input: KeyboardInput
   ): AppState = {
-    if (state.t >= 1.0)
+    if (state.t >= 1.0) MenuState(0.0)
+    else state.copy(t = state.t + 1.0 / (60 * 15)) // 15 seconds at 60FPS
+  }
+
+  def updateMenuState(
+      state: MenuState,
+      input: KeyboardInput
+  ): AppState = {
+    if (input.keysPressed.contains(Key.Enter))
       LevelIntroState(
         island = Island.basicIsland,
         height = 0.0,
         currentScore = 0
       )
-    else state.copy(t = state.t + 1.0 / (60 * 15)) // 15 seconds at 60FPS
+    else state.copy(t = state.t + 1.0 / 60)
   }
 
   def updateLevelIntroState(

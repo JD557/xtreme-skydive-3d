@@ -14,6 +14,7 @@ object Resources {
     BitmapFont(Image.loadBmpImage(Resource("assets/bizcat.bmp")).get, 8, 16)
   lazy val jamLogo = Image.loadBmpImage(Resource("assets/summerjam.bmp")).get
   lazy val jamLogoWa = WrapAround(jamLogo)
+  lazy val logo = Image.loadBmpImage(Resource("assets/logo.bmp")).get.view.scale(0.5).toRamSurface()
 
   val startupSound = Sound.loadWavClip(Resource("assets/startup.wav")).get
 }
