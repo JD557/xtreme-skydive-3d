@@ -33,6 +33,15 @@ case class BitmapFont(
       )(x + width * i, y)
     }
 
+  def renderTextCenteredX(
+      target: MutableSurface,
+      text: String,
+      screenWidth: Int,
+      y: Int,
+      color: Color = Color(0, 0, 0)
+  ): Unit =
+    renderText(target, text, (screenWidth - (text.size * width)) / 2, y, color)
+
   def textBoundingBox(text: String, x: Int, y: Int): AxisAlignedBoundingBox = {
     AxisAlignedBoundingBox(
       x = x,

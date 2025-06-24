@@ -27,7 +27,7 @@ object StateTransitions {
       LevelIntroState(
         level = 0,
         height = 0.0,
-        currentScore = 0
+        totalScore = 0
       )
     else state.copy(t = state.t + 1.0 / 60)
   }
@@ -68,15 +68,15 @@ object StateTransitions {
       state: LevelResultState,
       input: KeyboardInput
   ): AppState = {
-    if (input.keysPressed.contains(Key.Enter)) {
+    if (input.keysPressed.contains(Key.Enter) || state.t >= 5) {
       val nextLevel = state.lastState.level + 1
       if (nextLevel < Island.islands.size)
         LevelIntroState(
           level = nextLevel,
           height = 0.0,
-          currentScore = state.lastState.score
+          totalScore = state.lastState.totalScore
         )
-      else GameOverState(0, state.lastState.score)
+      else GameOverState(0, state.lastState.totalScore)
     } else state.copy(t = state.t + 1.0 / 60)
   }
 

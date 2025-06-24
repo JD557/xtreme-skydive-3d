@@ -61,12 +61,10 @@ object RenderLogic {
   ): Unit = {
 
     def renderText() = {
-      val text = "A JD557 game for"
-      val aabb = Resources.bizcat.textBoundingBox(text, 0, 0)
-      Resources.bizcat.renderText(
+      Resources.bizcat.renderTextCenteredX(
         surface,
-        text,
-        (Constants.screenWidth - aabb.width) / 2,
+        "A JD557 game for",
+        Constants.screenWidth,
         32,
         Color(255, 255, 255)
       )
@@ -105,17 +103,6 @@ object RenderLogic {
       input: KeyboardInput,
       surface: MutableSurface
   ): Unit = {
-    def renderText() = {
-      val text = "Press Enter to Start"
-      val aabb = Resources.bizcat.textBoundingBox(text, 0, 0)
-      Resources.bizcat.renderText(
-        surface,
-        text,
-        (Constants.screenWidth - aabb.width) / 2,
-        Constants.screenHeight - 32,
-        Color(255, 255, 255)
-      )
-    }
 
     val logo =
       if (state.t < 1.5) {
@@ -130,7 +117,14 @@ object RenderLogic {
       (Constants.screenHeight - Resources.logo.height) / 2
     )
 
-    if (((frame / 16) & 1) == 0) renderText()
+    if (((frame / 16) & 1) == 0)
+      Resources.bizcat.renderTextCenteredX(
+        surface,
+        "Press Enter to Start",
+        Constants.screenWidth,
+        Constants.screenHeight - 32,
+        Color(255, 255, 255)
+      )
 
     if (state.t < 4) {
       val lightFactor = Color.grayscale(
@@ -267,9 +261,9 @@ object RenderLogic {
 
     surface.blitPlane(
       lastGameSurface.view.clamped
-        .scale(1.0 - 0.4 * transition)
+        .scale(1.0 - 0.5 * transition)
         .rotate(-0.5 * transition)
-    )(Constants.screenWidth / 4, Constants.screenHeight / 2)
+    )(Constants.screenWidth / 3, 2 * Constants.screenHeight / 5)
 
     Resources.bizcat.renderText(
       surface,
@@ -279,11 +273,37 @@ object RenderLogic {
       Color(255, 255, 255)
     )
 
-    Resources.bizcat.renderText(surface, s"Score: ${state.lastState.score}", 4, 32, Color(255, 255, 255))
+    Resources.bizcat.renderText(
+      surface,
+      s"Score: ${state.totalScore - state.score} + ${state.score} = ${state.totalScore}",
+      4,
+      32,
+      Color(255, 255, 255)
+    )
+
+    Resources.bizcat.renderText(surface, "Rank:", 4, 48, Color(255, 255, 255))
+    surface.blit(
+      if (transition < 0.5)
+        Resources.ranks
+          .getSprite(state.rank)
+          .view
+          .scale(1 / (1 + 2 * transition))
+      else
+        Resources.ranks.getSprite(state.rank).view.scale(0.5)
+    )(48, 48)
 
     if (transition < 1.0) {
       val lightFactor = Color.grayscale((255 * (1 - transition)).toInt)
       surface.modify(_.map(_ + lightFactor))
+    } else if (state.lastState.level + 1 < Island.islands.size) {
+      if (((frame / 16) & 1) == 0)
+        Resources.bizcat.renderTextCenteredX(
+          surface,
+          "Get ready for the next level!",
+          Constants.screenWidth,
+          Constants.screenHeight - 32,
+          Color(255, 255, 255)
+        )
     }
   }
 
@@ -292,7 +312,40 @@ object RenderLogic {
       input: KeyboardInput,
       surface: MutableSurface
   ): Unit = {
-    Resources.bizcat.renderText(surface, "GAME OVER", 4, 32, Color(255, 255, 255))
-    Resources.bizcat.renderText(surface, s"Score: ${state.score}", 4, 64, Color(255, 255, 255))
+
+    val transition = Math.min(1.0, state.t)
+
+    Resources.bizcat.renderTextCenteredX(
+      surface,
+      "GAME OVER",
+      Constants.screenWidth,
+      32,
+      Color(255, 255, 255)
+    )
+    Resources.bizcat.renderTextCenteredX(
+      surface,
+      s"Score: ${state.totalScore}",
+      Constants.screenWidth,
+      64,
+      Color(255, 255, 255)
+    )
+    Resources.bizcat.renderTextCenteredX(
+      surface,
+      s"Rank:",
+      Constants.screenWidth,
+      96,
+      Color(255, 255, 255)
+    )
+    val rankSprite =
+      if (transition <= 1)
+        Resources.ranks.getSprite(state.rank).scale(2 - transition)
+      else
+        Resources.ranks.getSprite(state.rank)
+
+    surface
+      .blit(rankSprite)(
+        (Constants.screenWidth - rankSprite.width) / 2,
+        (Constants.screenHeight - rankSprite.height) / 2
+      )
   }
 }
