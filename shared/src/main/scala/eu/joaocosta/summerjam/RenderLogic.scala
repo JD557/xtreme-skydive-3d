@@ -271,14 +271,15 @@ object RenderLogic {
         .rotate(-0.5 * transition)
     )(Constants.screenWidth / 4, Constants.screenHeight / 2)
 
-    Resources.bizcat.renderText(surface, "Score:", 4, 4, Color(255, 255, 255))
     Resources.bizcat.renderText(
       surface,
-      "%06d".format(state.lastState.score),
+      if (state.success) "Awesome!" else "Fail!",
       4,
-      20,
+      4,
       Color(255, 255, 255)
     )
+
+    Resources.bizcat.renderText(surface, s"Score: ${state.lastState.score}", 4, 32, Color(255, 255, 255))
 
     if (transition < 1.0) {
       val lightFactor = Color.grayscale((255 * (1 - transition)).toInt)

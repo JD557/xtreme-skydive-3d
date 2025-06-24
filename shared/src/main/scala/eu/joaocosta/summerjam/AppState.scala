@@ -50,10 +50,14 @@ final case class GameState(
   def fall = copy(height = height - fallSpeed)
   def openParachute = copy(parachute = true)
   def updateGoals = {
-    val (hitGoal, otherGoals) = island.subgoals.partition(
+    lazy val (hitGoal, otherGoals) = island.subgoals.partition(
       _.isHit(position, -1 * height)
     )
-    if (hitGoal.nonEmpty) {
+    if (isDone && island.goal.isHit(position, island.goal.z)) {
+      copy(
+        score = score + island.goal.score
+      )
+    } else if (hitGoal.nonEmpty) {
       copy(
         island = island.copy(subgoals = otherGoals),
         score = score + hitGoal.map(_.score).sum
@@ -64,5 +68,6 @@ final case class GameState(
   val isDone = height <= 0
 }
 
-final case class GameOverState(t: Double, lastState: GameState) extends AppState
-
+final case class GameOverState(t: Double, lastState: GameState) extends AppState {
+  val success = lastState.island.goal.isHit(lastState.position, lastState.island.goal.z)
+}

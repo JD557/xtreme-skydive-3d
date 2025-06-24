@@ -60,6 +60,7 @@ object Main {
               RenderLogic.renderGameState(g, input, surface)
               StateTransitions.updateGameState(g, input)
             case go: GameOverState =>
+              if (go.t <= 0) audioPlayer.playNow(Resources.shutterSound, 0)
               RenderLogic.renderGameOverState(go, input, surface)
               StateTransitions.updateGameOverState(go, input)
           }
