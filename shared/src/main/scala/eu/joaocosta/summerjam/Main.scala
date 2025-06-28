@@ -40,6 +40,12 @@ object Main {
 
   var lastT = System.currentTimeMillis()
 
+  val surface = new RamSurface(
+    Constants.screenWidth,
+    Constants.screenHeight,
+    Color(0, 0, 0)
+  )
+
   def main(args: Array[String]): Unit = {
     AppLoop
       .statefulAppLoop[AppState]((state: AppState) =>
@@ -52,11 +58,6 @@ object Main {
           val input = canvas.getKeyboardInput()
           if (input.keysPressed(Key.F)) toggleFullScreen(canvas)
           canvas.clear()
-          val surface = new RamSurface(
-            Constants.screenWidth,
-            Constants.screenHeight,
-            Color(0, 0, 0)
-          )
 
           val newState = state match {
             case l: LoadingState =>
