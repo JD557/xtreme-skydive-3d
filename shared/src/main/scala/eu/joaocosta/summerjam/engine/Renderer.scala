@@ -28,27 +28,29 @@ object Renderer {
         )
         shape.aabb.intersect(screenArea).foreach { (x, y) =>
           if (shape.contains(x, y)) {
-            val (z, light) = poly match {
+            var z = 0.0
+            var light = 0.25
+            poly match {
               case Polygon.Triangle3d(a, b, c, _, la, lb, lc) =>
-                var _z = 0.0
-                var _light = 0.25
                 shape.foreachDeterminant(x, y) { (v, d) =>
                   val ratio = if (maxDet == 0) 1.0 else d / maxDet
-                  _z += (v match {
+                  z += (v match {
                     case 0 => c.z * ratio
                     case 1 => a.z * ratio
                     case 2 => b.z * ratio
                     case _ => 0
                   })
-                  _light += (v match {
+                  light += (v match {
                     case 0 => lc * ratio
                     case 1 => la * ratio
                     case 2 => lb * ratio
                     case _ => 0
                   })
                 }
-                (_z, Math.min(_light, 1.0))
-              case _ => (poly.depth, poly.light)
+                light = Math.min(light, 1.0)
+              case _ =>
+                z = poly.depth
+                light = poly.light
             }
             if (depthBuffer(y)(x) > z) {
               depthBuffer(y)(x) = z
