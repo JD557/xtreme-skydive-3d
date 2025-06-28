@@ -4,6 +4,7 @@ import scala.util.chaining.*
 import eu.joaocosta.summerjam.engine.*
 import eu.joaocosta.minart.input.KeyboardInput
 import eu.joaocosta.minart.input.KeyboardInput.Key
+import eu.joaocosta.minart.audio.AudioPlayer
 
 object StateTransitions {
   // val initialState = IntroState(0)
@@ -46,6 +47,7 @@ object StateTransitions {
   def updateGameState(
       state: GameState,
       input: KeyboardInput,
+      audioPlayer: AudioPlayer,
       dt: Double
   ): AppState = {
     state
@@ -66,7 +68,10 @@ object StateTransitions {
       .pipe(_.updateGoals)
       .pipe(st =>
         if (st.isDone) LevelResultState(0.0, st)
-        else st
+        else {
+          if (st.score > state.score) audioPlayer.playNow(Resources.scoreSound, 1)
+          st
+        }
       )
   }
 

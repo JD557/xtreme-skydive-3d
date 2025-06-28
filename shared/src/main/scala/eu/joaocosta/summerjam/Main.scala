@@ -64,7 +64,7 @@ object Main {
               if (g.height == GameConstants.startHeight)
                 audioPlayer.playNow(Resources.ingameMusic, 0)
               RenderLogic.renderGameState(g, input, surface)
-              StateTransitions.updateGameState(g, input, dt)
+              StateTransitions.updateGameState(g, input, audioPlayer, dt)
             case lr: LevelResultState =>
               if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 1)
               RenderLogic.renderLevelResultState(lr, input, surface)
