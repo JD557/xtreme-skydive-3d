@@ -19,7 +19,7 @@ object Main {
 
   val fullScreenSettings = canvasSettings.copy(fullScreen = true, scale = None)
 
-  var scanLines = false
+  var scanLines = true
 
   def toggleFullScreen(canvas: Canvas): Unit = {
     if (canvas.canvasSettings.fullScreen) canvas.changeSettings(canvasSettings)
@@ -92,17 +92,23 @@ object Main {
               RenderLogic.renderGameOverState(go, input, surface)
               StateTransitions.updateGameOverState(go, input, dt)
           }
-          val scaledSurface = surface.view.scale(2)
-
-          canvas.blit(
-            if (!scanLines) scaledSurface
-            else
-              scaledSurface.flatMap(color =>
-                (x: Int, y: Int) =>
-                  if ((y & 0x01) == 0) color
-                  else color * Color.grayscale(200)
-              )
-          )(0, 0)
+          // Optimized scanline rendering
+          val dimmingFactor =
+            if (scanLines) Color.grayscale(200) else Color.grayscale(255)
+          var y = 0
+          while (y < surface.height) {
+            var x = 0
+            while (x < surface.width) {
+              val c1 = surface.unsafeGetPixel(x, y)
+              val c2 = c1 * dimmingFactor
+              canvas.unsafePutPixel(2 * x, 2 * y, c1)
+              canvas.unsafePutPixel(2 * x + 1, 2 * y, c1)
+              canvas.unsafePutPixel(2 * x, 2 * y + 1, c2)
+              canvas.unsafePutPixel(2 * x + 1, 2 * y + 1, c2)
+              x = x + 1
+            }
+            y = y + 1
+          }
 
           canvas.redraw()
           newState
