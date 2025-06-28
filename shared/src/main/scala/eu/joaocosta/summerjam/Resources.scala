@@ -36,6 +36,14 @@ object Resources {
       64
     )
 
+  lazy val island1 = 
+    ObjLoader.loadObj(Resource("assets/island1.obj"), Some(Resource("assets/island1.mtl")))
+  lazy val island2 = 
+    ObjLoader.loadObj(Resource("assets/island2.obj"), Some(Resource("assets/island2.mtl")))
+  lazy val island3 = 
+    ObjLoader.loadObj(Resource("assets/island3.obj"), Some(Resource("assets/island3.mtl")))
+    
+
   lazy val startupSound = Sound.loadWavClip(Resource("assets/startup.wav")).get
   lazy val introMusic = Sound.loadWavClip(Resource("assets/menu.wav")).get
   lazy val ingameMusic = Sound.loadWavClip(Resource("assets/ingame.wav")).get
@@ -51,6 +59,9 @@ object Resources {
     () => diver,
     () => parachute,
     () => ranks,
+    () => island1,
+    () => island2,
+    () => island3,
     () => startupSound,
     () => introMusic,
     () => ingameMusic,
