@@ -38,5 +38,6 @@ object Resources {
 
   val startupSound = Sound.loadWavClip(Resource("assets/startup.wav")).get
   val introMusic = Sound.loadWavClip(Resource("assets/menu.wav")).get
+  val ingameMusic = Sound.loadWavClip(Resource("assets/ingame.wav")).get
   val shutterSound = Sound.loadWavClip(Resource("assets/shutter.wav")).get
 }

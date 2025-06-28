@@ -61,10 +61,12 @@ object Main {
               RenderLogic.renderLevelIntroState(i, input, surface)
               StateTransitions.updateLevelIntroState(i, input, dt)
             case g: GameState =>
+              if (g.height == GameConstants.startHeight)
+                audioPlayer.playNow(Resources.ingameMusic, 0)
               RenderLogic.renderGameState(g, input, surface)
               StateTransitions.updateGameState(g, input, dt)
             case lr: LevelResultState =>
-              if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 0)
+              if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 1)
               RenderLogic.renderLevelResultState(lr, input, surface)
               StateTransitions.updateLevelResultState(lr, input, dt)
             case go: GameOverState =>
