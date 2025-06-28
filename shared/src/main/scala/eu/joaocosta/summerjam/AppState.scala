@@ -69,6 +69,8 @@ final case class GameState(
     lazy val (hitGoal, otherGoals) = island.subgoals.partition(
       _.isHit(position, -1 * height)
     )
+    lazy val nextGoals =
+      otherGoals.filterNot(_.canBeDiscarded(position, -1 * height))
     if (isDone && island.goal.isHit(position, island.goal.z)) {
       copy(
         score = score + island.goal.score,
@@ -76,9 +78,13 @@ final case class GameState(
       )
     } else if (hitGoal.nonEmpty) {
       copy(
-        island = island.copy(subgoals = otherGoals),
+        island = island.copy(subgoals = nextGoals),
         score = score + hitGoal.map(_.score).sum,
         totalScore = totalScore + hitGoal.map(_.score).sum
+      )
+    } else if (nextGoals.size < otherGoals.size) {
+      copy(
+        island = island.copy(subgoals = nextGoals)
       )
     } else this
   }

@@ -1,5 +1,6 @@
 package eu.joaocosta.summerjam
 
+import eu.joaocosta.minart.graphics.*
 import eu.joaocosta.minart.geometry.*
 import eu.joaocosta.summerjam.engine.*
 
@@ -22,28 +23,40 @@ final case class Goal(
       math.abs(playerPos.x - x) <= radius &&
       math.abs(playerPos.y - y) <= radius
 
-  lazy val polygons = {
+  def canBeDiscarded(playerPos: Point, playerZ: Double): Boolean =
+    playerZ - z >= GameConstants.tolerance
+
+  private lazy val outerRimShape = Vector(
+    Shape.rectangle( // Top
+      Point(x - radius, y - radius),
+      Point(x + radius, y - innerRadius)
+    ),
+    Shape.rectangle( // Bottom
+      Point(x - radius, y + innerRadius),
+      Point(x + radius, y + radius)
+    ),
+    Shape.rectangle( // Left
+      Point(x - radius, y - radius),
+      Point(x - innerRadius, y + radius)
+    ),
+    Shape.rectangle( // Right
+      Point(x + innerRadius, y - radius),
+      Point(x + radius, y + radius)
+    )
+  ).flatMap(Helpers.triangulate)
+
+  private lazy val innerRimShape =
+    Helpers.triangulate(
+      Shape.rectangle(
+        Point(x - innerRadius, y - innerRadius),
+        Point(x + innerRadius, y + innerRadius)
+      )
+    )
+
+  def polygons(innerColor: Color, outerColor: Color) = {
     val outerRim = Helpers.toPolygons(
-      Vector(
-        Shape.rectangle( // Top
-          Point(x - radius, y - radius),
-          Point(x + radius, y - innerRadius)
-        ),
-        Shape.rectangle( // Bottom
-          Point(x - radius, y + innerRadius),
-          Point(x + radius, y + radius)
-        ),
-        Shape.rectangle( // Left
-          Point(x - radius, y - radius),
-          Point(x - innerRadius, y + radius)
-        ),
-        Shape.rectangle( // Right
-          Point(x + innerRadius, y - radius),
-          Point(x + radius, y + radius)
-        )
-      ).flatMap(Helpers.triangulate),
-      if (subGoal) Colors.gold.copy(a = 200).premultiplyAlpha
-      else Colors.redLight,
+      outerRimShape,
+      outerColor,
       z
     )
     val innerRim =
@@ -54,8 +67,7 @@ final case class Goal(
             Point(x + innerRadius, y + innerRadius)
           )
         ),
-        if (subGoal) Colors.white.copy(a = 128).premultiplyAlpha
-        else Colors.white,
+        innerColor,
         z
       )
     outerRim ++ innerRim
