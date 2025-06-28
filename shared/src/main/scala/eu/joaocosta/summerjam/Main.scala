@@ -5,16 +5,24 @@ import eu.joaocosta.minart.graphics.*
 import eu.joaocosta.minart.runtime.*
 import eu.joaocosta.summerjam.engine.*
 import eu.joaocosta.minart.audio.AudioPlayer
+import eu.joaocosta.minart.input.KeyboardInput.Key
 
 object Main {
   val canvasSettings =
     Canvas.Settings(
       width = Constants.screenWidth * 2,
       height = Constants.screenHeight * 2,
-      scale = Some(2),
+      scale = None,
       clearColor = Color(0, 0, 0),
       title = "Xtreme Skydive 3D"
     )
+
+  val fullScreenSettings = canvasSettings.copy(fullScreen = true, scale = None)
+
+  def toggleFullScreen(canvas: Canvas): Unit = {
+    if (canvas.canvasSettings.fullScreen) canvas.changeSettings(canvasSettings)
+    else canvas.changeSettings(fullScreenSettings)
+  }
 
   val frameCounter = {
     var frameNumber: Int = 0
@@ -42,12 +50,14 @@ object Main {
           frameCounter()
           RenderLogic.frame += 1
           val input = canvas.getKeyboardInput()
+          if (input.keysPressed(Key.F)) toggleFullScreen(canvas)
           canvas.clear()
           val surface = new RamSurface(
             Constants.screenWidth,
             Constants.screenHeight,
             Color(0, 0, 0)
           )
+
           val newState = state match {
             case l: LoadingState =>
               RenderLogic.renderLoadingState(l, surface)
