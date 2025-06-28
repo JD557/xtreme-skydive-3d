@@ -85,7 +85,9 @@ object RenderLogic {
     if (state.t / 15 > 0.3) {
       surface.blit(
         Resources.jamLogoWa
-          .columnScroll(dy => (8 * math.sin(dy / 8.0 + state.t / 15 * 16)).toInt)
+          .columnScroll(dy =>
+            (8 * math.sin(dy / 8.0 + state.t / 15 * 16)).toInt
+          )
           .flipV
           .scale(1.0, 0.5)
           .map(_ * Color.grayscale((255 * (state.t / 15 - 0.3)).toInt))
@@ -99,7 +101,10 @@ object RenderLogic {
 
     val lightFactor =
       Color.grayscale(
-        Math.max(0, Math.min(255, (512 * math.sin(state.t / 15 * Math.PI)).toInt))
+        Math.max(
+          0,
+          Math.min(255, (512 * math.sin(state.t / 15 * Math.PI)).toInt)
+        )
       )
     surface.modify(_.map(_ * lightFactor))
 
@@ -120,7 +125,8 @@ object RenderLogic {
         )
       } else Resources.logo
 
-    surface.blit(logo)(
+    if (state.t > 1.5) { surface.blit(Resources.background)(0, 0) }
+    surface.blit(logo, BlendMode.ColorMask(Color(0, 0, 0)))(
       (Constants.screenWidth - Resources.logo.width) / 2,
       (Constants.screenHeight - Resources.logo.height) / 2
     )
@@ -270,7 +276,7 @@ object RenderLogic {
           if (
             x < 5 || x > lastGameSurface.width - 5 ||
             y < 5 || y > lastGameSurface.height - 5
-          ) Color(0, 0, 0)
+          ) Colors.mask
           else if (
             x < 10 || x > lastGameSurface.width - 10 ||
             y < 10 || y > lastGameSurface.height - 10
@@ -279,10 +285,13 @@ object RenderLogic {
       )
     )
 
+    surface.blit(Resources.background)(0, 0)
+
     surface.blitPlane(
       lastGameSurface.view.clamped
         .scale(1.0 - 0.5 * transition)
-        .rotate(-0.5 * transition)
+        .rotate(-0.5 * transition),
+      BlendMode.ColorMask(Colors.mask)
     )(Constants.screenWidth / 3, 2 * Constants.screenHeight / 5)
 
     Resources.bizcat.renderText(
@@ -334,6 +343,8 @@ object RenderLogic {
   ): Unit = {
 
     val transition = Math.min(1.0, state.t)
+
+    surface.blit(Resources.background)(0, 0)
 
     Resources.bizcat.renderTextCenteredX(
       surface,

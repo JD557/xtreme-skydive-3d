@@ -19,6 +19,10 @@ object Resources {
     .scale(0.5)
     .toRamSurface()
 
+  lazy val background = Image
+    .loadBmpImage(Resource("assets/background.bmp"))
+    .get
+
   lazy val diver =
     SpriteSheet(Image.loadBmpImage(Resource("assets/diver.bmp")).get, 32, 32)
   lazy val parachute = Image.loadBmpImage(Resource("assets/parachute.bmp")).get
