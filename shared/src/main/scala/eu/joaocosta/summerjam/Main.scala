@@ -19,10 +19,14 @@ object Main {
 
   val fullScreenSettings = canvasSettings.copy(fullScreen = true, scale = None)
 
+  var scanLines = false
+
   def toggleFullScreen(canvas: Canvas): Unit = {
     if (canvas.canvasSettings.fullScreen) canvas.changeSettings(canvasSettings)
     else canvas.changeSettings(fullScreenSettings)
   }
+
+  def toggleScanlines() = scanLines = !scanLines
 
   val frameCounter = {
     var frameNumber: Int = 0
@@ -57,6 +61,7 @@ object Main {
           RenderLogic.frame += 1
           val input = canvas.getKeyboardInput()
           if (input.keysPressed(Key.F)) toggleFullScreen(canvas)
+          if (input.keysPressed(Key.S)) toggleScanlines()
           canvas.clear()
 
           val newState = state match {
@@ -87,15 +92,18 @@ object Main {
               RenderLogic.renderGameOverState(go, input, surface)
               StateTransitions.updateGameOverState(go, input, dt)
           }
+          val scaledSurface = surface.view.scale(2)
+
           canvas.blit(
-            surface.view
-              .scale(2)
-              .flatMap(color =>
+            if (!scanLines) scaledSurface
+            else
+              scaledSurface.flatMap(color =>
                 (x: Int, y: Int) =>
                   if ((y & 0x01) == 0) color
                   else color * Color.grayscale(200)
               )
           )(0, 0)
+
           canvas.redraw()
           newState
         }
