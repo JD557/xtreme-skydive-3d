@@ -24,7 +24,7 @@ object StateTransitions {
       input: KeyboardInput,
       dt: Double
   ): AppState = {
-    if (state.t >= 15.0) MenuState(0.0)
+    if (state.t >= 15.1) MenuState(0.0)
     else state.copy(t = state.t + dt)
   }
 
