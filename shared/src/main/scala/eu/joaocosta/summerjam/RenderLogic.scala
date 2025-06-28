@@ -8,6 +8,8 @@ import eu.joaocosta.minart.input.KeyboardInput.Key
 
 object RenderLogic {
   var frame: Int = 0
+  val frameRatio: Int = (60 / Constants.fps).toInt
+  def blinkFrame = ((frameRatio * frame / 8) & 1)
 
   val sea =
     RamSurface.tabulate(Constants.screenWidth, Constants.screenHeight)((x, y) =>
@@ -80,13 +82,13 @@ object RenderLogic {
       (Constants.screenWidth - Resources.jamLogo.width) / 2,
       (Constants.screenHeight - Resources.jamLogo.height) / 2
     )
-    if (state.t > 0.3) {
+    if (state.t / 15 > 0.3) {
       surface.blit(
         Resources.jamLogoWa
-          .columnScroll(dy => (8 * math.sin(dy / 8.0 + state.t * 16)).toInt)
+          .columnScroll(dy => (8 * math.sin(dy / 8.0 + state.t / 15 * 16)).toInt)
           .flipV
           .scale(1.0, 0.5)
-          .map(_ * Color.grayscale((255 * (state.t - 0.3)).toInt))
+          .map(_ * Color.grayscale((255 * (state.t / 15 - 0.3)).toInt))
       )(
         (Constants.screenWidth - Resources.jamLogo.width) / 2,
         Resources.jamLogo.height + (Constants.screenHeight - Resources.jamLogo.height) / 2
@@ -97,11 +99,11 @@ object RenderLogic {
 
     val lightFactor =
       Color.grayscale(
-        Math.max(0, Math.min(255, (512 * math.sin(state.t * Math.PI)).toInt))
+        Math.max(0, Math.min(255, (512 * math.sin(state.t / 15 * Math.PI)).toInt))
       )
     surface.modify(_.map(_ * lightFactor))
 
-    if (state.t < 0.5) renderText()
+    if (state.t < 0.5 * 15) renderText()
   }
 
   def renderMenuState(
@@ -123,7 +125,7 @@ object RenderLogic {
       (Constants.screenHeight - Resources.logo.height) / 2
     )
 
-    if (((frame / 16) & 1) == 0)
+    if (blinkFrame == 0)
       Resources.bizcat.renderTextCenteredX(
         surface,
         "Press Enter to Start",
@@ -183,7 +185,7 @@ object RenderLogic {
       else {
         val moving = input.isDown(Key.Up)
         val sprite =
-          Resources.diver.getSprite((frame / 8) % 2, if (moving) 1 else 0)
+          Resources.diver.getSprite(blinkFrame, if (moving) 1 else 0)
         if (transition > 0) {
           val darkFactor = Color.grayscale((255 * (1 - transition)).toInt)
           sprite.map(color =>
@@ -314,7 +316,7 @@ object RenderLogic {
       val lightFactor = Color.grayscale((255 * (1 - transition)).toInt)
       surface.modify(_.map(_ + lightFactor))
     } else if (state.lastState.level + 1 < Island.islands.size) {
-      if (((frame / 16) & 1) == 0)
+      if (blinkFrame == 0)
         Resources.bizcat.renderTextCenteredX(
           surface,
           "Get ready for the next level!",

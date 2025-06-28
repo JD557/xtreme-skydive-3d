@@ -16,7 +16,8 @@ final case class LevelIntroState(
 
   def island = Island.islands(level)
 
-  def rise = copy(height = height + GameConstants.levelIntroSpeed)
+  def rise(dt: Double) =
+    copy(height = height + GameConstants.levelIntroSpeed * dt)
 
   def initialGameState = GameState(
     level = level,
@@ -41,20 +42,28 @@ final case class GameState(
     totalScore: Int
 ) extends AppState {
 
-  val moveSpeed =
-    if (parachute) GameConstants.parachuteMoveSpeed else GameConstants.moveSpeed
-  val fallSpeed =
-    if (parachute) GameConstants.parachuteFallSpeed else GameConstants.fallSpeed
-
-  def rotateLeft = copy(rotation = rotation + GameConstants.rotateSpeed)
-  def rotateRight = copy(rotation = rotation - GameConstants.rotateSpeed)
-  def move = copy(position =
-    Point(
-      position.x - moveSpeed * math.sin(rotation),
-      position.y - moveSpeed * math.cos(rotation)
+  def rotateLeft(dt: Double) =
+    copy(rotation = rotation + GameConstants.rotateSpeed * dt)
+  def rotateRight(dt: Double) =
+    copy(rotation = rotation - GameConstants.rotateSpeed * dt)
+  def move(dt: Double) = {
+    val moveSpeed =
+      if (parachute) GameConstants.parachuteMoveSpeed * dt
+      else GameConstants.moveSpeed * dt
+    copy(position =
+      Point(
+        position.x - moveSpeed * math.sin(rotation),
+        position.y - moveSpeed * math.cos(rotation)
+      )
     )
-  )
-  def fall = copy(height = height - fallSpeed)
+  }
+  def fall(dt: Double) = {
+    val fallSpeed =
+      if (parachute) GameConstants.parachuteFallSpeed * dt
+      else GameConstants.fallSpeed * dt
+    copy(height = height - fallSpeed)
+  }
+
   def openParachute = copy(parachute = true)
   def updateGoals = {
     lazy val (hitGoal, otherGoals) = island.subgoals.partition(
@@ -86,7 +95,7 @@ final case class LevelResultState(t: Double, lastState: GameState)
   val totalScore = lastState.totalScore
 
   def rank: Int = {
-    val island =  Island.islands(lastState.level)
+    val island = Island.islands(lastState.level)
     val maxScore = island.subgoals.map(_.score).sum + island.goal.score
     if (score == maxScore) 6 // S Rank
     else (6 * score / maxScore)

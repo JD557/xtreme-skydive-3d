@@ -30,10 +30,14 @@ object Main {
     }
   }
 
+  var lastT = System.currentTimeMillis()
+
   def main(args: Array[String]): Unit = {
     AppLoop
       .statefulAppLoop[AppState]((state: AppState) =>
         system => {
+          val dt = (System.currentTimeMillis() - lastT) / 1000.0
+          lastT = System.currentTimeMillis()
           import system.*
           frameCounter()
           RenderLogic.frame += 1
@@ -48,24 +52,24 @@ object Main {
             case i: IntroState =>
               if (i.t <= 0) audioPlayer.playNow(Resources.startupSound, 0)
               RenderLogic.renderIntroState(i, input, surface)
-              StateTransitions.updateIntroState(i, input)
+              StateTransitions.updateIntroState(i, input, dt)
             case m: MenuState =>
               if (m.t <= 0) audioPlayer.playNow(Resources.introMusic, 0)
               RenderLogic.renderMenuState(m, input, surface)
-              StateTransitions.updateMenuState(m, input)
+              StateTransitions.updateMenuState(m, input, dt)
             case i: LevelIntroState =>
               RenderLogic.renderLevelIntroState(i, input, surface)
-              StateTransitions.updateLevelIntroState(i, input)
+              StateTransitions.updateLevelIntroState(i, input, dt)
             case g: GameState =>
               RenderLogic.renderGameState(g, input, surface)
-              StateTransitions.updateGameState(g, input)
+              StateTransitions.updateGameState(g, input, dt)
             case lr: LevelResultState =>
               if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 0)
               RenderLogic.renderLevelResultState(lr, input, surface)
-              StateTransitions.updateLevelResultState(lr, input)
+              StateTransitions.updateLevelResultState(lr, input, dt)
             case go: GameOverState =>
               RenderLogic.renderGameOverState(go, input, surface)
-              StateTransitions.updateGameOverState(go, input)
+              StateTransitions.updateGameOverState(go, input, dt)
           }
           canvas.blit(
             surface.view
@@ -82,7 +86,7 @@ object Main {
       )
       .configure(
         (canvasSettings, AudioPlayer.Settings()),
-        LoopFrequency.hz60,
+        LoopFrequency.fromHz(Constants.fps),
         StateTransitions.initialState
       )
       .run()

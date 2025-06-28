@@ -12,15 +12,17 @@ object StateTransitions {
   // State transitions
   def updateIntroState(
       state: IntroState,
-      input: KeyboardInput
+      input: KeyboardInput,
+      dt: Double
   ): AppState = {
-    if (state.t >= 1.0) MenuState(0.0)
-    else state.copy(t = state.t + 1.0 / (60 * 15)) // 15 seconds at 60FPS
+    if (state.t >= 15.0) MenuState(0.0)
+    else state.copy(t = state.t + dt)
   }
 
   def updateMenuState(
       state: MenuState,
-      input: KeyboardInput
+      input: KeyboardInput,
+      dt: Double
   ): AppState = {
     if (input.keysPressed.contains(Key.Enter))
       LevelIntroState(
@@ -28,34 +30,39 @@ object StateTransitions {
         height = 0.0,
         totalScore = 0
       )
-    else state.copy(t = state.t + 1.0 / 60)
+    else state.copy(t = state.t + dt)
   }
 
   def updateLevelIntroState(
       state: LevelIntroState,
-      input: KeyboardInput
+      input: KeyboardInput,
+      dt: Double
   ): AppState = {
     if (state.height >= GameConstants.startHeight)
       state.initialGameState
-    else state.rise
+    else state.rise(dt)
   }
 
-  def updateGameState(state: GameState, input: KeyboardInput): AppState = {
+  def updateGameState(
+      state: GameState,
+      input: KeyboardInput,
+      dt: Double
+  ): AppState = {
     state
       .pipe(st =>
         if (st.height <= 1.0) st.openParachute
         else st
       )
       .pipe(st =>
-        if (input.isDown(Key.Left)) st.rotateLeft
-        else if (input.isDown(Key.Right)) st.rotateRight
+        if (input.isDown(Key.Left)) st.rotateLeft(dt)
+        else if (input.isDown(Key.Right)) st.rotateRight(dt)
         else st
       )
       .pipe(st =>
-        if (input.isDown(Key.Up) || st.parachute) st.move
+        if (input.isDown(Key.Up) || st.parachute) st.move(dt)
         else st
       )
-      .pipe(_.fall)
+      .pipe(_.fall(dt))
       .pipe(_.updateGoals)
       .pipe(st =>
         if (st.isDone) LevelResultState(0.0, st)
@@ -65,7 +72,8 @@ object StateTransitions {
 
   def updateLevelResultState(
       state: LevelResultState,
-      input: KeyboardInput
+      input: KeyboardInput,
+      dt: Double
   ): AppState = {
     if (input.keysPressed.contains(Key.Enter) || state.t >= 5) {
       val nextLevel = state.lastState.level + 1
@@ -76,15 +84,16 @@ object StateTransitions {
           totalScore = state.lastState.totalScore
         )
       else GameOverState(0, state.lastState.totalScore)
-    } else state.copy(t = state.t + 1.0 / 60)
+    } else state.copy(t = state.t + 1.0 / Constants.fps)
   }
 
   def updateGameOverState(
       state: GameOverState,
-      input: KeyboardInput
+      input: KeyboardInput,
+      dt: Double
   ): AppState = {
     if (input.keysPressed.contains(Key.Enter)) {
       MenuState(0)
-    } else state.copy(t = state.t + 1.0 / 60)
+    } else state.copy(t = state.t + 1.0 / Constants.fps)
   }
 }
