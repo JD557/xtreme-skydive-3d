@@ -7,10 +7,18 @@ import eu.joaocosta.minart.input.KeyboardInput.Key
 import eu.joaocosta.minart.audio.AudioPlayer
 
 object StateTransitions {
-  // val initialState = IntroState(0)
-  val initialState = MenuState(0)
+  val initialState = LoadingState(0, Resources.allResources)
 
   // State transitions
+  def updateLoadingState(
+      state: LoadingState
+  ): AppState = state match {
+    case LoadingState(_, Nil) => IntroState(0)
+    case LoadingState(loaded, loadNext :: remaining) =>
+      loadNext()
+      LoadingState(loaded + 1, remaining)
+  }
+
   def updateIntroState(
       state: IntroState,
       input: KeyboardInput,
@@ -69,7 +77,8 @@ object StateTransitions {
       .pipe(st =>
         if (st.isDone) LevelResultState(0.0, st)
         else {
-          if (st.score > state.score) audioPlayer.playNow(Resources.scoreSound, 1)
+          if (st.score > state.score)
+            audioPlayer.playNow(Resources.scoreSound, 1)
           st
         }
       )

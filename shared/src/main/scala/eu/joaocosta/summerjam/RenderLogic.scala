@@ -62,6 +62,35 @@ object RenderLogic {
 
   // State logic
 
+  def renderLoadingState(
+      state: LoadingState,
+      surface: MutableSurface
+  ): Unit = {
+    val progress =
+      state.loaded.toDouble / (state.loaded + state.remainingResources.size)
+    surface.fillRegion(
+      10,
+      surface.height - 20,
+      surface.width - 20,
+      10,
+      Color(255, 255, 255)
+    )
+    surface.fillRegion(
+      10 + 2,
+      surface.height - 20 + 2,
+      surface.width - 20 - 4,
+      10 - 4,
+      Color(0, 0, 0)
+    )
+    surface.fillRegion(
+      10 + 3,
+      surface.height - 20 + 3,
+      (progress * (surface.width - 20 - 6)).toInt,
+      10 - 6,
+      Color(255, 255, 255)
+    )
+  }
+
   def renderIntroState(
       state: IntroState,
       input: KeyboardInput,

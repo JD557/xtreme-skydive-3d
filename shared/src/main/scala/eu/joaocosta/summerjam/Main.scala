@@ -49,6 +49,9 @@ object Main {
             Color(0, 0, 0)
           )
           val newState = state match {
+            case l: LoadingState =>
+              RenderLogic.renderLoadingState(l, surface)
+              StateTransitions.updateLoadingState(l)
             case i: IntroState =>
               if (i.t <= 0) audioPlayer.playNow(Resources.startupSound, 0)
               RenderLogic.renderIntroState(i, input, surface)

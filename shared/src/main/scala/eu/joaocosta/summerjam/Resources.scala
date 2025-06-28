@@ -36,9 +36,25 @@ object Resources {
       64
     )
 
-  val startupSound = Sound.loadWavClip(Resource("assets/startup.wav")).get
-  val introMusic = Sound.loadWavClip(Resource("assets/menu.wav")).get
-  val ingameMusic = Sound.loadWavClip(Resource("assets/ingame.wav")).get
-  val shutterSound = Sound.loadWavClip(Resource("assets/shutter.wav")).get
-  val scoreSound = Sound.loadWavClip(Resource("assets/score.wav")).get
+  lazy val startupSound = Sound.loadWavClip(Resource("assets/startup.wav")).get
+  lazy val introMusic = Sound.loadWavClip(Resource("assets/menu.wav")).get
+  lazy val ingameMusic = Sound.loadWavClip(Resource("assets/ingame.wav")).get
+  lazy val shutterSound = Sound.loadWavClip(Resource("assets/shutter.wav")).get
+  lazy val scoreSound = Sound.loadWavClip(Resource("assets/score.wav")).get
+
+  val allResources: List[() => Any] = List(
+    () => bizcat,
+    () => jamLogo,
+    () => jamLogoWa,
+    () => logo,
+    () => background,
+    () => diver,
+    () => parachute,
+    () => ranks,
+    () => startupSound,
+    () => introMusic,
+    () => ingameMusic,
+    () => shutterSound,
+    () => scoreSound
+  )
 }
