@@ -2,7 +2,11 @@
 
 ![Game Cover](assets/game-cover.png)
 
+Arcade-like skydiving game with a 32-bit aesthetic
+
 Game developed for the [32BitJam: SummerDreams](https://itch.io/jam/32bitjam-summer-dreams).
+
+[Game page](https://jd557.itch.io/xtreme-skydive-3d)
 
 ## How to play
 
