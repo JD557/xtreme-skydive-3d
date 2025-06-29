@@ -57,7 +57,7 @@ object Main {
           val dt = (System.currentTimeMillis() - lastT) / 1000.0
           lastT = System.currentTimeMillis()
           import system.*
-          frameCounter()
+          //frameCounter()
           RenderLogic.frame += 1
           val input = canvas.getKeyboardInput()
           if (input.keysPressed(Key.F)) toggleFullScreen(canvas)

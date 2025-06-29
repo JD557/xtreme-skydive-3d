@@ -3,3 +3,4 @@
 .scala-build/
 PowerShell*/
 .mscbackup
+package/
