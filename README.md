@@ -13,6 +13,8 @@ The parachute automatically opens when the height reaches 100.
 
 Rings are worth 100 points, landing safely is worth 500 points in morning levels and 1000 points in afternoon levels.
 
+**You only advance to the next level if you get at least a C rank!** (50 % of the total level score).
+
 ### Controls
 
 - **Enter**: Advance on menus
