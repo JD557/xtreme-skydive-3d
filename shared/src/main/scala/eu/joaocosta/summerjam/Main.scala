@@ -60,8 +60,10 @@ object Main {
           //frameCounter()
           RenderLogic.frame += 1
           val input = canvas.getKeyboardInput()
-          if (input.keysPressed(Key.F)) toggleFullScreen(canvas)
-          if (input.keysPressed(Key.S)) toggleScanlines()
+          if (input.isDown(Key.Alt)) {
+            if (input.keysPressed(Key.Enter)) toggleFullScreen(canvas)
+            if (input.keysPressed(Key.S)) toggleScanlines()
+          }
           canvas.clear()
 
           val newState = state match {
