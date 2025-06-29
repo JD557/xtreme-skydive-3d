@@ -38,9 +38,9 @@ object Island {
         Goal(-0.5, 0.5, -15.0, 0.20, true, 100),
         Goal(-0.5, -0.5, -10.0, 0.20, true, 100),
         Goal(0.5, 0.5, -5.0, 0.20, true, 100),
-        Goal(0.5, 0.5, -2.5, 0.10, true, 100)
+        Goal(0.5, 0.5, -1.5, 0.10, true, 100)
       ),
-      goal = Goal(-0.5, 0.5, 0.20, 0.10, false, 1000)
+      goal = Goal(-0.5, 0.5, 0.20, 0.10, false, 500)
     ),
     Island(
       model = Resources.island2,
@@ -51,7 +51,7 @@ object Island {
         Goal(0, 1, -7.5, 0.1, true, 100),
         Goal(-1, 0, -5, 0.1, true, 100)
       ),
-      goal = Goal(0.0, 0.0, 0.0, 0.05, false, 1000)
+      goal = Goal(0.0, 0.0, 0.0, 0.05, false, 500)
     ),
     Island(
       model = Resources.island3,
@@ -64,7 +64,7 @@ object Island {
         Goal(-1, -1, -5, 0.1, true, 100),
         Goal(-0.9, -0.9, -2.5, 0.1, true, 100)
       ),
-      goal = Goal(0.70, 0.70, 0.1, 0.05, false, 1000)
+      goal = Goal(0.70, 0.70, 0.1, 0.05, false, 500)
     ),
     Island(
       model = Resources.island1,

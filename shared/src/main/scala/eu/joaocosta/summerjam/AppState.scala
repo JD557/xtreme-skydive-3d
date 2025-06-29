@@ -96,22 +96,26 @@ final case class GameState(
 
 final case class LevelResultState(t: Double, lastState: GameState)
     extends AppState {
-  val success =
-    lastState.island.goal.isHit(lastState.position, lastState.island.goal.z)
-
   val score = lastState.score
   val totalScore = lastState.totalScore
 
-  def rank: Int = {
+  val rank: Int = {
     val island = Island.islands(lastState.level)
     val maxScore = island.subgoals.map(_.score).sum + island.goal.score
     if (score == maxScore) 6 // S Rank
     else (6 * score / maxScore)
   }
+
+  val successfulLanding =
+    lastState.island.goal.isHit(lastState.position, lastState.island.goal.z)
+
+  val goodRank =
+    rank >= 3
+
 }
 
 final case class GameOverState(t: Double, totalScore: Int) extends AppState {
-  def rank: Int = {
+  val rank: Int = {
     val maxScore = Island.islands
       .map(island => island.subgoals.map(_.score).sum + island.goal.score)
       .sum

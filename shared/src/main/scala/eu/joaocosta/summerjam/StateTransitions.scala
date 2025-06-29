@@ -91,7 +91,7 @@ object StateTransitions {
   ): AppState = {
     if (input.keysPressed.contains(Key.Enter) || state.t >= 5) {
       val nextLevel = state.lastState.level + 1
-      if (nextLevel < Island.islands.size)
+      if (state.goodRank && nextLevel < Island.islands.size)
         LevelIntroState(
           level = nextLevel,
           height = 0.0,

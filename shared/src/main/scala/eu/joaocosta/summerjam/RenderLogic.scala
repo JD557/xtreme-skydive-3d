@@ -155,6 +155,7 @@ object RenderLogic {
       } else Resources.logo
 
     if (state.t > 1.5) { surface.blit(Resources.background)(0, 0) }
+    else { surface.fill(Color(0, 0, 0)) }
     surface.blit(logo, BlendMode.ColorMask(Color(0, 0, 0)))(
       (Constants.screenWidth - Resources.logo.width) / 2,
       (Constants.screenHeight - Resources.logo.height) / 2
@@ -325,7 +326,9 @@ object RenderLogic {
 
     Resources.bizcat.renderText(
       surface,
-      if (state.success) "Awesome!" else "Fail!",
+      if (state.successfulLanding && state.goodRank) "Awesome!"
+      else if (state.successfulLanding) "Nice landing!"
+      else "Fail!",
       4,
       4,
       Color(255, 255, 255)
@@ -357,7 +360,8 @@ object RenderLogic {
       if (blinkFrame == 0)
         Resources.bizcat.renderTextCenteredX(
           surface,
-          "Get ready for the next level!",
+          if (state.goodRank) "Get ready for the next level!"
+          else "Better luck next time!",
           Constants.screenWidth,
           Constants.screenHeight - 32,
           Color(255, 255, 255)
