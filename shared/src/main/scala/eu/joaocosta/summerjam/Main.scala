@@ -51,73 +51,84 @@ object Main {
   )
 
   def main(args: Array[String]): Unit = {
+    val initialCanvasSettings =
+      if (args.contains("--fullscreen")) fullScreenSettings else canvasSettings
+    if (args.contains("--no-scanlines")) toggleScanlines()
     AppLoop
-      .statefulAppLoop[AppState]((state: AppState) =>
-        system => {
-          val dt = (System.currentTimeMillis() - lastT) / 1000.0
-          lastT = System.currentTimeMillis()
-          import system.*
-          //frameCounter()
-          RenderLogic.frame += 1
-          val input = canvas.getKeyboardInput()
-          if (input.isDown(Key.Alt)) {
-            if (input.keysPressed(Key.Enter)) toggleFullScreen(canvas)
-            if (input.keysPressed(Key.S)) toggleScanlines()
-          }
-          canvas.clear()
+      .statefulAppLoop[AppState](
+        { (state: AppState) => system =>
+          {
+            val dt = (System.currentTimeMillis() - lastT) / 1000.0
+            lastT = System.currentTimeMillis()
+            import system.*
+            // frameCounter()
+            RenderLogic.frame += 1
+            val input = canvas.getKeyboardInput()
+            val quit = if (input.isDown(Key.Alt)) {
+              if (input.keysPressed(Key.Enter)) toggleFullScreen(canvas)
+              if (input.keysPressed(Key.S)) toggleScanlines()
 
-          val newState = state match {
-            case l: LoadingState =>
-              RenderLogic.renderLoadingState(l, surface)
-              StateTransitions.updateLoadingState(l)
-            case i: IntroState =>
-              if (i.t <= 0) audioPlayer.playNow(Resources.startupSound, 0)
-              RenderLogic.renderIntroState(i, input, surface)
-              StateTransitions.updateIntroState(i, input, dt)
-            case m: MenuState =>
-              if (m.t <= 0) audioPlayer.playNow(Resources.introMusic, 0)
-              RenderLogic.renderMenuState(m, input, surface)
-              StateTransitions.updateMenuState(m, input, dt)
-            case i: LevelIntroState =>
-              RenderLogic.renderLevelIntroState(i, input, surface)
-              StateTransitions.updateLevelIntroState(i, input, dt)
-            case g: GameState =>
-              if (g.height == GameConstants.startHeight)
-                audioPlayer.playNow(Resources.ingameMusic, 0)
-              RenderLogic.renderGameState(g, input, surface)
-              StateTransitions.updateGameState(g, input, audioPlayer, dt)
-            case lr: LevelResultState =>
-              if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 1)
-              RenderLogic.renderLevelResultState(lr, input, surface)
-              StateTransitions.updateLevelResultState(lr, input, dt)
-            case go: GameOverState =>
-              RenderLogic.renderGameOverState(go, input, surface)
-              StateTransitions.updateGameOverState(go, input, dt)
-          }
-          // Optimized scanline rendering
-          val dimmingFactor =
-            if (scanLines) Color.grayscale(200) else Color.grayscale(255)
-          var y = 0
-          while (y < surface.height) {
-            var x = 0
-            while (x < surface.width) {
-              val c1 = surface.unsafeGetPixel(x, y)
-              val c2 = c1 * dimmingFactor
-              canvas.unsafePutPixel(2 * x, 2 * y, c1)
-              canvas.unsafePutPixel(2 * x + 1, 2 * y, c1)
-              canvas.unsafePutPixel(2 * x, 2 * y + 1, c2)
-              canvas.unsafePutPixel(2 * x + 1, 2 * y + 1, c2)
-              x = x + 1
+              Platform() != Platform.JS && input.keysPressed(Key.Q)
+            } else false
+            canvas.clear()
+
+            val newState = state match {
+              case l: LoadingState =>
+                RenderLogic.renderLoadingState(l, surface)
+                StateTransitions.updateLoadingState(l)
+              case i: IntroState =>
+                if (i.t <= 0) audioPlayer.playNow(Resources.startupSound, 0)
+                RenderLogic.renderIntroState(i, input, surface)
+                StateTransitions.updateIntroState(i, input, dt)
+              case m: MenuState =>
+                if (m.t <= 0) audioPlayer.playNow(Resources.introMusic, 0)
+                RenderLogic
+                  .renderMenuState(m, input, Platform() != Platform.JS, surface)
+                StateTransitions.updateMenuState(m, input, dt)
+              case i: LevelIntroState =>
+                RenderLogic.renderLevelIntroState(i, input, surface)
+                StateTransitions.updateLevelIntroState(i, input, dt)
+              case g: GameState =>
+                if (g.height == GameConstants.startHeight)
+                  audioPlayer.playNow(Resources.ingameMusic, 0)
+                RenderLogic.renderGameState(g, input, surface)
+                StateTransitions.updateGameState(g, input, audioPlayer, dt)
+              case lr: LevelResultState =>
+                if (lr.t <= 0) audioPlayer.playNow(Resources.shutterSound, 1)
+                RenderLogic.renderLevelResultState(lr, input, surface)
+                StateTransitions.updateLevelResultState(lr, input, dt)
+              case go: GameOverState =>
+                RenderLogic.renderGameOverState(go, input, surface)
+                StateTransitions.updateGameOverState(go, input, dt)
+              case Quit =>
+                Quit
             }
-            y = y + 1
-          }
+            // Optimized scanline rendering
+            val dimmingFactor =
+              if (scanLines) Color.grayscale(200) else Color.grayscale(255)
+            var y = 0
+            while (y < surface.height) {
+              var x = 0
+              while (x < surface.width) {
+                val c1 = surface.unsafeGetPixel(x, y)
+                val c2 = c1 * dimmingFactor
+                canvas.unsafePutPixel(2 * x, 2 * y, c1)
+                canvas.unsafePutPixel(2 * x + 1, 2 * y, c1)
+                canvas.unsafePutPixel(2 * x, 2 * y + 1, c2)
+                canvas.unsafePutPixel(2 * x + 1, 2 * y + 1, c2)
+                x = x + 1
+              }
+              y = y + 1
+            }
 
-          canvas.redraw()
-          newState
-        }
+            canvas.redraw()
+            if (quit) Quit else newState
+          }
+        },
+        terminateWhen = (state: AppState) => state == Quit
       )
       .configure(
-        (canvasSettings, AudioPlayer.Settings()),
+        (initialCanvasSettings, AudioPlayer.Settings()),
         LoopFrequency.fromHz(Constants.fps),
         StateTransitions.initialState
       )

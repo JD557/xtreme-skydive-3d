@@ -123,3 +123,5 @@ final case class GameOverState(t: Double, totalScore: Int) extends AppState {
     else (6 * totalScore / maxScore)
   }
 }
+
+case object Quit extends AppState

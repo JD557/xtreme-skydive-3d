@@ -27,6 +27,14 @@ Rings are worth 100 points, landing safely is worth 500 points in morning levels
 
 ### Settings
 
+#### Launch Arguments
+
+- `--fullscreen`: Launch in fullscreen
+- `--no-scanlines`: Launch with disabled scanlines
+
+#### Commands
+
+- **Alt + Q**: Quit
 - **Alt + Enter**: Toggle fullscreen
 - **Alt + S**: Toggle scanlines
 

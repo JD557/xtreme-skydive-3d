@@ -143,6 +143,7 @@ object RenderLogic {
   def renderMenuState(
       state: MenuState,
       input: KeyboardInput,
+      showQuit: Boolean,
       surface: MutableSurface
   ): Unit = {
 
@@ -154,21 +155,34 @@ object RenderLogic {
         )
       } else Resources.logo
 
-    if (state.t > 1.5) { surface.blit(Resources.background)(0, 0) }
-    else { surface.fill(Color(0, 0, 0)) }
+    if (state.t > 1.5) {
+      surface.blit(Resources.background)(0, 0)
+      Resources.bizcat.renderTextCenteredX(
+        surface,
+        state.t.toInt % 3 match {
+          case 0 => if (showQuit) "Alt + Q: Quit" else ""
+          case 1 => "Alt + Enter: Fullscreen"
+          case 2 => "Alt + S: Scanlines"
+        },
+        Constants.screenWidth,
+        Constants.screenHeight - 24,
+        Color(64, 64, 64)
+      )
+    } else { surface.fill(Color(0, 0, 0)) }
     surface.blit(logo, BlendMode.ColorMask(Color(0, 0, 0)))(
       (Constants.screenWidth - Resources.logo.width) / 2,
       (Constants.screenHeight - Resources.logo.height) / 2
     )
 
-    if (blinkFrame == 0)
+    if (blinkFrame == 0) {
       Resources.bizcat.renderTextCenteredX(
         surface,
         "Press Enter to Start",
         Constants.screenWidth,
-        Constants.screenHeight - 32,
+        Constants.screenHeight - 48,
         Color(255, 255, 255)
       )
+    }
 
     if (state.t < 4) {
       val lightFactor = Color.grayscale(
