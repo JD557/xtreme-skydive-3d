@@ -197,7 +197,7 @@ object RenderLogic {
       Color.grayscale(
         Math.min(255, (255 * state.height / GameConstants.startHeight).toInt)
       )
-    surface.modify(_.map(_ + lightFactor))
+    surface.modify(_.map(_ + (lightFactor * lightFactor)))
   }
 
   def renderGameState(
