@@ -315,8 +315,7 @@ object RenderLogic {
       showHud = false
     )
     lastGameSurface.modify(
-      _.flatMap((color) =>
-        (x, y) =>
+      _.transformPixels((color, x, y) =>
           if (
             x < 5 || x > lastGameSurface.width - 5 ||
             y < 5 || y > lastGameSurface.height - 5
