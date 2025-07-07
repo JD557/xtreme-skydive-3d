@@ -1,5 +1,7 @@
 package eu.joaocosta.summerjam
 
+import upickle.default.*
+
 import eu.joaocosta.minart.graphics.*
 import eu.joaocosta.minart.geometry.*
 import eu.joaocosta.summerjam.engine.*
@@ -11,7 +13,7 @@ final case class Goal(
     radius: Double,
     subGoal: Boolean,
     score: Int
-) {
+) derives ReadWriter {
   val innerRadius =
     if (subGoal) radius * 2 / 3
     else radius / 2

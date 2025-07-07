@@ -8,6 +8,7 @@ import eu.joaocosta.minart.audio.AudioPlayer
 import eu.joaocosta.minart.input.KeyboardInput.Key
 
 object Main {
+
   val canvasSettings =
     Canvas.Settings(
       width = Constants.screenWidth * 2,
@@ -61,7 +62,7 @@ object Main {
             val dt = (System.currentTimeMillis() - lastT) / 1000.0
             lastT = System.currentTimeMillis()
             import system.*
-            // frameCounter()
+            //frameCounter()
             RenderLogic.frame += 1
             val input = canvas.getKeyboardInput()
             val quit = if (input.isDown(Key.Alt)) {

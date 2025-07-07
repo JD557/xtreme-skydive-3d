@@ -21,12 +21,11 @@ run:
   scala-cli --power --suppress-experimental-warning .
 
 prepare-assets:
-  rm -rf {{resources-path}}
-  mkdir -p {{resources-path}}/assets
   cp assets/*.wav {{resources-path}}/assets/
   cp assets/*.bmp {{resources-path}}/assets/
   cp assets/*.obj {{resources-path}}/assets/
   cp assets/*.mtl {{resources-path}}/assets/
+  cp assets/*.json {{resources-path}}/assets/
 
 package-java: prepare-assets
   rm -rf {{java-release-path}}
@@ -35,10 +34,8 @@ package-java: prepare-assets
   scala-cli --power package . -f --embed-resources --resource-dirs {{resources-path}} -o {{java-release-path}}/skydive.jar
 
 package-native: prepare-assets
-  rm -rf {{native-release-path}}
-  mkdir -p {{native-release-path}}
-
-  scala-cli --power package . -f --embed-resources --resource-dirs {{resources-path}} --native --native-mode release -o {{native-release-path}}/skydive
+  mkdir {{native-release-path}}
+  scala-cli --power package . -f --embed-resources --resource-dirs {{resources-path}} --native --native-mode release -o {{native-release-path}}/skydive.exe
 
 package-js: prepare-assets
   rm -rf {{js-release-path}}

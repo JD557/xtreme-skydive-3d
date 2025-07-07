@@ -50,6 +50,8 @@ object Resources {
   lazy val shutterSound = Sound.loadWavClip(Resource("assets/shutter.wav")).get
   lazy val scoreSound = Sound.loadWavClip(Resource("assets/score.wav")).get
 
+  lazy val levels = Level.loadLevels(Resource("assets/levels.json")).get
+
   val allResources: List[() => Any] = List(
     () => bizcat,
     () => jamLogo,
@@ -66,6 +68,7 @@ object Resources {
     () => introMusic,
     () => ingameMusic,
     () => shutterSound,
-    () => scoreSound
+    () => scoreSound,
+    () => levels
   )
 }

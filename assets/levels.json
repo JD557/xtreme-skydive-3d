@@ -1,0 +1,483 @@
+[
+  {
+    "modelName": "island1",
+    "subgoals": [
+      {
+        "x": -0.5,
+        "y": 0.5,
+        "z": -15,
+        "radius": 0.2,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.5,
+        "y": -0.5,
+        "z": -10,
+        "radius": 0.2,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0.5,
+        "z": -5,
+        "radius": 0.2,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0.5,
+        "z": -1.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      }
+    ],
+    "goal": {
+      "x": -0.5,
+      "y": 0.5,
+      "z": 0.2,
+      "radius": 0.1,
+      "subGoal": false,
+      "score": 500
+    }
+  },
+  {
+    "modelName": "island2",
+    "subgoals": [
+      {
+        "x": 0,
+        "y": -1,
+        "z": -15,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.75,
+        "y": -0.75,
+        "z": -12.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "z": -10,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "z": -7.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -1,
+        "y": 0,
+        "z": -5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      }
+    ],
+    "goal": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "radius": 0.05,
+      "subGoal": false,
+      "score": 500
+    }
+  },
+  {
+    "modelName": "island3",
+    "subgoals": [
+      {
+        "x": 0.25,
+        "y": 0.25,
+        "z": -15,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.5,
+        "y": -0.5,
+        "z": -13,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -11.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0.5,
+        "z": -10,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -7.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -1,
+        "y": -1,
+        "z": -5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.9,
+        "y": -0.9,
+        "z": -2.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      }
+    ],
+    "goal": {
+      "x": 0.7,
+      "y": 0.7,
+      "z": 0.1,
+      "radius": 0.05,
+      "subGoal": false,
+      "score": 500
+    }
+  },
+  {
+    "modelName": "island1",
+    "subgoals": [
+      {
+        "x": 0,
+        "y": 0,
+        "z": -15,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.3,
+        "y": -0.3,
+        "z": -13.5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -12,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.3,
+        "y": 0.3,
+        "z": -10.5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -9,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.3,
+        "y": -0.3,
+        "z": -6.5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.3,
+        "y": 0.3,
+        "z": -3.5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      }
+    ],
+    "goal": {
+      "x": -0.75,
+      "y": 0.4,
+      "z": 0.2,
+      "radius": 0.05,
+      "subGoal": false,
+      "score": 1000
+    },
+    "afternoon": true
+  },
+  {
+    "modelName": "island2",
+    "subgoals": [
+      {
+        "x": -1,
+        "y": -0.8,
+        "z": -16,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.5,
+        "y": -1,
+        "z": -15,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": -1,
+        "z": -14,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": -1,
+        "z": -13,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": -0.8,
+        "z": -12,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": 0.8,
+        "z": -9,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "z": -7.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -1,
+        "y": 0.8,
+        "z": -6,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -3,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -2,
+        "radius": 0.075,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -1,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      }
+    ],
+    "goal": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.25,
+      "radius": 0.05,
+      "subGoal": false,
+      "score": 1000
+    },
+    "afternoon": true
+  },
+  {
+    "modelName": "island3",
+    "subgoals": [
+      {
+        "x": 0,
+        "y": 0,
+        "z": -16,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": -15,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0,
+        "z": -14,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.6,
+        "y": 0.2,
+        "z": -13.25,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.7,
+        "y": 0.3,
+        "z": -12.5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.8,
+        "y": 0.35,
+        "z": -11.75,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.9,
+        "y": 0.375,
+        "z": -11,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": 0.5,
+        "z": -10,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": 0.6,
+        "z": -9.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": 0.7,
+        "z": -9,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 1,
+        "y": 0.8,
+        "z": -8.5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0.5,
+        "z": -7,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0.5,
+        "z": -6,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": 0.5,
+        "y": 0.5,
+        "z": -5,
+        "radius": 0.05,
+        "subGoal": true,
+        "score": 100
+      },
+      {
+        "x": -0.5,
+        "y": 0.2,
+        "z": -1.5,
+        "radius": 0.1,
+        "subGoal": true,
+        "score": 100
+      }
+    ],
+    "goal": {
+      "x": -0.6,
+      "y": -0.2,
+      "z": 0.1,
+      "radius": 0.025,
+      "subGoal": false,
+      "score": 1000
+    },
+    "afternoon": true
+  }
+]
